@@ -1,3 +1,4 @@
+
 <template>
   <div id="product-home" class="container">
     <b-field grouped>
@@ -50,18 +51,24 @@
         </div>
       </div>
     </b-collapse>
+    <product-search-results/>
   </div>
 </template>
 
 <script>
+import ProductSearchResults from "./ProductSearchResults"
 export default {
   name: "ProductHome",
   data: function() {
     return {
       searchArg: ""
     };
+  },
+  components: {
+    ProductSearchResults
   }
 };
+
 </script>
 
 <style lang="scss">
