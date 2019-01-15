@@ -1,3 +1,4 @@
+
 <template>
   <div id="product-home" class="container">
     <b-field grouped>
@@ -52,10 +53,12 @@
         </div>
       </div>
     </b-collapse>
+    <product-search-results/>
   </div>
 </template>
 
 <script>
+import ProductSearchResults from "./ProductSearchResults"
 export default {
   name: "ProductHome",
   data: function() {
@@ -64,20 +67,11 @@ export default {
       items: []
     };
   },
-  methods: {
-    fetchItems(){
-      console.log("fetching items");
-      fetch('https://food-search-polytech-api.herokuapp.com/products/milk')
-                        .then(stream => stream.json())
-                        .then(data => this.items= data)
-                        .catch(error => console.error(error))
-    }
-  },
-  created(){
-    console.log("created");
-    this.fetchItems();
+  components: {
+    ProductSearchResults
   }
 };
+
 </script>
 
 <style lang="scss">
