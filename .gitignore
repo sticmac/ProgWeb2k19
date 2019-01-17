@@ -532,3 +532,5 @@ ASALocalRun/
 # BeatPulse healthcheck temp database
 healthchecksdb
 
+
+server/public/
