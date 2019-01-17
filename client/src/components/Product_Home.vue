@@ -67,15 +67,12 @@ export default {
   },
   components: {
     ProductSearchResults
-<<<<<<< HEAD
   },
   methods: {
     results: function() {
       const query = this.searchArg.split(' ').join('+');
       this.$router.push({name: 'results', params: {q: query}});
     }
-=======
->>>>>>> 718f2ce... Placeholder for search result
   }
 };
 
