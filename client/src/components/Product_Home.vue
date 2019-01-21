@@ -52,7 +52,7 @@
         </div>
       </div>
     </b-collapse>
-    <product-search-results/>
+    <product-search-results v-bind:results="results"/>
   </div>
 </template>
 
