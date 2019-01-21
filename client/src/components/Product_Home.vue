@@ -52,7 +52,6 @@
         </div>
       </div>
     </b-collapse>
-    <product-search-results v-bind:results="results"/>
   </div>
 </template>
 
