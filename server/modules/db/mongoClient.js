@@ -1,10 +1,11 @@
 const MongoClient = require('mongodb').MongoClient;
 const assert = require('assert');
 // Connection URL
-const url = 'mongodb://localhost:27017';
+// const url = 'mongodb://localhost/off';
+const url = "mongodb://root:toor123@ds159624.mlab.com:59624/mongo-vietnam";
 
 // Database Name
-const dbName = 'off';
+const dbName = 'mongo-vietnam';
 
 // Create a new MongoClient
 const client = new MongoClient(url);
