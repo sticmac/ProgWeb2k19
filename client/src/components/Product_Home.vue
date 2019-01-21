@@ -10,7 +10,7 @@
         expanded
       ></b-input>
       <p class="control">
-        <a class="button is-link is-large" :disabled="searchArg.length === 0">
+        <a class="button is-link is-large" v-on:click="results" :disabled="searchArg.length === 0">
           <span>Rechercher</span>
         </a>
       </p>
@@ -52,7 +52,6 @@
         </div>
       </div>
     </b-collapse>
-    <product-search-results v-bind:results="results"/>
   </div>
 </template>
 
@@ -67,6 +66,11 @@ export default {
   },
   components: {
     ProductSearchResults
+  },
+  methods: {
+    results: function() {
+      this.$router.push({path: 'results', query: {q: this.searchArg}});
+    }
   }
 };
 
