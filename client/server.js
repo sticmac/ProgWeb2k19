@@ -6,6 +6,6 @@ app.use(express.static(__dirname + "/dist/"));
 app.get(/.*/, function(req, res) {
   res.sendfile(__dirname + "/dist/index.html");
 });
-app.listen(port, '0.0.0.0');
+app.listen(port, "0.0.0.0");
 
 console.log("Server started...");
