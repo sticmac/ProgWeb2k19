@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div id="product-home" class="container">
     <b-field grouped>
       <b-input
         placeholder="Rechercher un produit ..."
@@ -64,3 +64,8 @@ export default {
 };
 </script>
 
+<style lang="scss">
+#product-home {
+  padding-top: 20vh;
+}
+</style>
