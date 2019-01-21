@@ -18,4 +18,8 @@ export default {
 
 <style lang="scss">
 @import "./src/styles/global.scss";
+#app {
+  height: 100%;
+  margin: 0;
+}
 </style>
