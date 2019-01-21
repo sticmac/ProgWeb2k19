@@ -5,7 +5,7 @@ const db = require("../../modules/db/mongoClient");
 /* GET home page. */
 router.get('/:key_word', (req, res, next) => {
 
-    db.findByRegex("vietnam", "product_name", ".*" + req.params.key_word + ".*").then(value => {
+    db.findByRegex("products", "product_name", ".*" + req.params.key_word + ".*").then(value => {
             res.status(200);
             if (value.length === 0) {
                 res.send({msg: "Nothing found."})
