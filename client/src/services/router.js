@@ -12,7 +12,7 @@ const routes = [
     { path: '/', redirect: '/home' },
     { path: '/home', component: ProductHome },
     { path: '/item/:productId', component: ProductView, props: true},
-    { path: '/results', component: ProductSearchResults, props: true}
+    { path: '/results/:q', component: ProductSearchResults, name: 'results', props: true}
   ]
   
 const router = new VueRouter({

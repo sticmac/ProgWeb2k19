@@ -69,7 +69,8 @@ export default {
   },
   methods: {
     results: function() {
-      this.$router.push({path: 'results', query: {q: this.searchArg}});
+      const query = this.searchArg.split(' ').join('+');
+      this.$router.push({name: 'results', params: {q: query}});
     }
   }
 };
