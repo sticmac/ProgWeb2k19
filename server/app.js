@@ -6,6 +6,7 @@ const logger = require('morgan');
 
 const indexRouter = require('./routes/index');
 
+const product = require('./routes/product/product');
 const app = express();
 
 // view engine setup
@@ -18,8 +19,14 @@ app.use(express.urlencoded({extended: false}));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-
+app.use('/product', product);
+// *****************************
+// IMPORTANT:
+// This route needs to be the last route declared !!!
+// Else some routes could be overridden
 app.use('/', indexRouter);
+// *****************************
+
 
 
 app.use((req, res, next) => {
