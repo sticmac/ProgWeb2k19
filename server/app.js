@@ -12,6 +12,11 @@ const app = express();
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
+app.use((req, res, next) => {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    next();
+});
 
 app.use(logger('dev'));
 app.use(express.json());
@@ -27,7 +32,6 @@ app.use('/products', products);
 // Else some routes could be overridden
 app.use('/', indexRouter);
 // *****************************
-
 
 
 app.use((req, res, next) => {
