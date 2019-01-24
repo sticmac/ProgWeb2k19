@@ -54,5 +54,19 @@ router.get('/:key_words', (req, res, next) => {
 
 });
 
+router.get('/id/:id', (req, res, next) => {
+    db.findBy("france", {_id: req.params.id})
+        .then(value => {
+            console.log(value);
+            res.status(200);
+            res.send(value);
+        })
+        .catch(reason => {
+            res.status(404);
+            console.log(reason);
+            res.send("Resource not found");
+        })
+});
+
 
 module.exports = router;

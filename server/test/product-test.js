@@ -4,7 +4,7 @@ const fetch = require("node-fetch");
 describe('Product', function () {
     describe('product search', function () {
 
-        it('return one product', function () {
+        it('return one product', () => {
             return fetch('http://localhost:3000/products/lignaform')
                 .then(res => res.json())
                 .then(val => {
@@ -12,14 +12,21 @@ describe('Product', function () {
                 });
         });
 
-        it('should get more than one product', function () {
+        it('should get more than one product', () => {
             return fetch('http://localhost:3000/products/lignaform+Farine')
                 .then(res => res.json())
                 .then(json => {
-                    console.log(json.length);
                     assert.equal(38, json.length)
                 });
         });
+
+        it("should return the entire item", () => {
+            return fetch('http://localhost:3000/products/id/00')
+                .then(res => res.json())
+                .then(json => {
+                    assert.ok(!!json)
+                })
+        })
 
         // it('should list all products', function () {
         //     fetch('http://localhost:3000/products')
