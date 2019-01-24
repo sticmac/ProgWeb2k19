@@ -55,9 +55,19 @@ module.exports = {
 
         })
     },
-    findBy: (collection, criteria) => {
+    findOneBy: (collection, criteria) => {
         return new Promise((resolve, reject) => {
             db.collection(collection).findOne(criteria, (mongoError, objects) => {
+                if (mongoError) {
+                    reject(mongoError);
+                }
+                resolve(objects);
+            })
+        })
+    },
+    findBy: (collection, criteria) => {
+        return new Promise((resolve, reject) => {
+            db.collection(collection).find(criteria).toArray((mongoError, objects) => {
                 if (mongoError) {
                     reject(mongoError);
                 }
