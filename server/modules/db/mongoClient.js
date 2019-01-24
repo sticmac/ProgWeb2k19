@@ -57,7 +57,7 @@ module.exports = {
     },
     findBy: (collection, criteria) => {
         return new Promise((resolve, reject) => {
-            db.collection(collection).find(criteria).toArray((mongoError, objects) => {
+            db.collection(collection).findOne(criteria, (mongoError, objects) => {
                 if (mongoError) {
                     reject(mongoError);
                 }
