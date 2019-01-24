@@ -2,6 +2,33 @@ const express = require('express');
 const router = express.Router();
 const db = require("../../modules/db/mongoClient");
 
+function buildImageURL(item) {
+    // src="https://static.openfoodfacts.org/images/products/000/000/003/0113/ingredients_fr.17.200.jpg"
+    if (!!item.images) {
+        let str = "https://static.openfoodfacts.org/images/products/";
+        if (item.images.front_fr) {
+            let chunk = [];
+            for (let i = 0; i < item._id.length; i += 3) {
+                chunk.push(item._id.substring(i, i + 3));
+            }
+            if (chunk[chunk.length - 1].length < 3) {
+                chunk[chunk.length - 2] += chunk[chunk.length - 1];
+                chunk = chunk.filter((value, index) => index !== chunk.length - 1)
+            }
+            str += chunk.join("/") + "/front_fr";
+            const front = item.images.front_fr;
+            str += "." + front.rev + ".full.jpg";
+            return str
+        }
+        return null;
+    } else {
+        return null;
+    }
+
+
+}
+
+
 /* GET home page. */
 router.get('/', (req, res, next) => {
 
@@ -42,7 +69,9 @@ router.get('/:key_words', (req, res, next) => {
             return {
                 id: v._id,
                 name: v.product_name,
-                ingredients: v.ingredients_text_with_allergens_en
+                ingredients: v.ingredients_text_with_allergens_en,
+                image_url: buildImageURL(v)
+
             }
         }));
     }).catch(reason => {
@@ -55,7 +84,7 @@ router.get('/:key_words', (req, res, next) => {
 });
 
 router.get('/id/:id', (req, res, next) => {
-    db.findBy("france", {_id: req.params.id})
+    db.findOneBy("france", {_id: req.params.id})
         .then(value => {
             console.log(value);
             res.status(200);
