@@ -1,6 +1,6 @@
 <template>
-    <div class="card is-secondary">
-        <header class="card-header">
+    <div class="box card is-secondary">
+        <header class="card-header is-shadowless">
           <p class="card-header-title">
             {{meal.name}}
           </p>
