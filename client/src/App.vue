@@ -1,20 +1,25 @@
 <template>
   <div id="app">
-    <Accueil/>
+    <Header></Header>
+    <router-view></router-view>
   </div>
 </template>
 
 <script>
-import Accueil from './components/Accueil.vue'
+import Header from './components/Header.vue'
 
 export default {
-  name: 'app',
+  name: "app",
   components: {
-    Accueil
+    Header
   }
-}
+};
 </script>
 
 <style lang="scss">
-@import './src/styles/global.scss';
+@import "./src/styles/global.scss";
+#app {
+  height: 100%;
+  margin: 0;
+}
 </style>

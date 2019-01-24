@@ -5,13 +5,18 @@ const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 
 const indexRouter = require('./routes/index');
-const usersRouter = require('./routes/users');
-
+// const nutri_score = require('./routes/nutri_score');
+const products = require('./routes/product/products');
 const app = express();
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
+app.use((req, res, next) => {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    next();
+});
 
 app.use(logger('dev'));
 app.use(express.json());
@@ -19,9 +24,14 @@ app.use(express.urlencoded({extended: false}));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-
+// app.use('/nutriscore', nutri_score);
+app.use('/products', products);
+// *****************************
+// IMPORTANT:
+// This route needs to be the last route declared !!!
+// Else some routes could be overridden
 app.use('/', indexRouter);
-app.use('/users', usersRouter);
+// *****************************
 
 
 app.use((req, res, next) => {
@@ -51,3 +61,6 @@ app.use(function (err, req, res, next) {
 
 
 module.exports = app;
+
+
+
