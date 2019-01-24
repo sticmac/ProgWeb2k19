@@ -68,7 +68,7 @@ module.exports = {
     findByRegex: (collection, object_key, regex) => {
         const criteria = {};
         criteria[object_key] = {$regex: regex};
-        console.log(criteria);
+        // console.log(criteria);
         return new Promise((resolve, reject) => {
             db.collection(collection).find(criteria).toArray((mongoError, objects) => {
                 if (mongoError) {
