@@ -1,3 +1,29 @@
+@charset "utf-8";
+
+// Import a Google Font
+@import url('https://fonts.googleapis.com/css?family=Nunito:400,700');
+
+$tablet: 380px;
+$desktop: 800px;
+$widescreen: 1200px;
+
+// Set your brand colors
+$purple: rgb(119, 77, 138);
+$pink: #FA7C91;
+$brown: #757763;
+$green: #2af598;
+$blue: #08aeea;
+$yellow: #f3ff57;
+$beige-light: #D0D1CD;
+$beige-lighter: rgb(243, 243, 243);
+
+// Update Bulma's global variables
+$family-sans-serif: "Nunito", sans-serif;
+$grey-dark: $brown;
+$grey-light: $beige-light;
+$primary: $blue;
+$link: $blue;
+
 // Imports for Buefy
 @import './../../node_modules/buefy/src/scss/buefy-build.scss'; 
 
