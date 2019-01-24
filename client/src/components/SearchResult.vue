@@ -9,7 +9,7 @@
           <div class="media">
             <div class="media-left">
               <figure class="image is-64x64 is-square">
-                <img v-bind:src="meal.thumbUrl" v-bind:alt="meal.name" class="thumbnail">
+                <img v-bind:src="meal.image_url" v-bind:alt="meal.name" class="thumbnail">
               </figure>
             </div>
 
