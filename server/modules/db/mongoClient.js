@@ -55,6 +55,16 @@ module.exports = {
 
         })
     },
+    findOneBy: (collection, criteria) => {
+        return new Promise((resolve, reject) => {
+            db.collection(collection).findOne(criteria, (mongoError, objects) => {
+                if (mongoError) {
+                    reject(mongoError);
+                }
+                resolve(objects);
+            })
+        })
+    },
     findBy: (collection, criteria) => {
         return new Promise((resolve, reject) => {
             db.collection(collection).find(criteria).toArray((mongoError, objects) => {
@@ -68,7 +78,7 @@ module.exports = {
     findByRegex: (collection, object_key, regex) => {
         const criteria = {};
         criteria[object_key] = {$regex: regex};
-        console.log(criteria);
+        // console.log(criteria);
         return new Promise((resolve, reject) => {
             db.collection(collection).find(criteria).toArray((mongoError, objects) => {
                 if (mongoError) {
