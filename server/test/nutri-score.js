@@ -6,7 +6,10 @@ describe('Nutri-score', function () {
 
         it('return one product', () => {
             return fetch('http://localhost:3000/nutriscore/item/00')
-                .then(res => res.json())
+                .then(res => {
+                    // console.log(res);
+                    res.json()
+                })
                 .then(json => {
                     assert.ok(!!json.nutriscore)
                 });
