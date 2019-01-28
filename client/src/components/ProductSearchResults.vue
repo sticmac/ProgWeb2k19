@@ -21,7 +21,9 @@ export default {
                     mode: 'cors',
                     cache: 'default' };
 
-        const myRequest = new Request('http://localhost:3000/products/' + this.q, myInit);
+        const serverUrl = process.env.VUE_APP_SERVER_URL || "http://localhost:3000";
+
+        const myRequest = new Request(serverUrl + '/products/' + this.q, myInit);
         fetch(myRequest)
         .then(
             (response) => {
