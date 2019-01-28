@@ -75,12 +75,15 @@ module.exports = {
             })
         })
     },
-    findByRegex: (collection, object_key, regex) => {
+    findByRegex: (collection, object_key, regex, params) => {
         const criteria = {};
         criteria[object_key] = {$regex: regex};
         // console.log(criteria);
         return new Promise((resolve, reject) => {
-            db.collection(collection).find(criteria).toArray((mongoError, objects) => {
+            (!!params.pageLength && !!params.pageNumber ?
+                    db.collection(collection).find(criteria).skip(params.pageLength * (params.pageNumber - 1)).limit(params.pageLength) :
+                    db.collection(collection).find(criteria)
+            ).toArray((mongoError, objects) => {
                 if (mongoError) {
                     reject(mongoError);
                 }
@@ -88,9 +91,12 @@ module.exports = {
             })
         })
     },
-    findAll: (collection) => {
+    findAll: (collection, params) => {
         return new Promise((resolve, reject) => {
-            db.collection(collection).find({}).toArray((mongoError, objects) => {
+            (!!params.pageLength && !!params.pageNumber ?
+                    db.collection(collection).find({}).skip(params.pageLength * (params.pageNumber - 1)).limit(params.pageLength) :
+                    db.collection(collection).find({})
+            ).toArray((mongoError, objects) => {
                 if (mongoError) {
                     reject(mongoError);
                 }

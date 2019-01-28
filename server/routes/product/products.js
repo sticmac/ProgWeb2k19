@@ -28,62 +28,95 @@ function buildImageURL(item) {
 
 }
 
+function getParams(req, res) {
+
+    let params = {};
+
+    if (!req.query.pageLength && req.query.pageNumber) {
+        res.status(400);
+        res.send({error: "Cannot use 'pageNumber' without 'pageLength'"});
+        return null;
+    } else if (req.query.pageLength && !req.query.pageNumber) {
+        res.status(400);
+        res.send({error: "Cannot use 'pageLength' without 'pageNumber'"});
+        return null;
+    }
+    if (!!req.query.pageLength && !!req.query.pageNumber) {
+        params.pageLength = parseInt(req.query.pageLength);
+        params.pageNumber = parseInt(req.query.pageNumber);
+    }
+    if (params.pageNumber <= 0) {
+        res.status(400);
+        res.send({error: "Page number must superior or equal to '1'."})
+        return null;
+    }
+    return params;
+}
+
 
 /* GET home page. */
 router.get('/', (req, res, next) => {
+    const params = getParams(req, res);
+    if (!!params) {
+        db.findAll("france", params)
+            .then(value => {
+                res.status(200);
 
-    db.findAll("france")
-        .then(value => {
-            res.status(200);
-
-            res.send(value.map(v =>
-                ({
-                    name: v.product_name,
-                    ingredients: v.ingredients_text_with_allergens_en
-                })))
-        })
-        .catch(reason => {
-            console.error(reason);
-            res.status(404);
-            res.send("Not Found");
-        })
+                res.send(value.map(v => {
+                        console.log({
+                            id: v._id,
+                            name: v.product_name || "unknown",
+                            ingredients: v.ingredients_text_with_allergens_fr || v.ingredients_text_fr || "",
+                            image_url: buildImageURL(v) || null
+                        });
+                        return ({
+                            id: v._id,
+                            name: v.product_name || "unknown",
+                            ingredients: v.ingredients_text_with_allergens_fr || v.ingredients_text_fr || "",
+                            image_url: buildImageURL(v) || null
+                        })
+                    }
+                ))
+            })
+            .catch(reason => {
+                console.error(reason);
+                res.status(404);
+                res.send("Not Found");
+            })
+    }
 
 
 });
 
 router.get('/:key_words', (req, res, next) => {
+    const params = getParams(req, res);
+    if (!!params) {
+        const keyWordArray = req.params.key_words.split("+");
+        console.log(".*(" + keyWordArray.join("|") + ")+.*");
+        const regex = keyWordArray.length > 1 ? ".*(" + keyWordArray.join("|") + ")+.*" : ".*" + keyWordArray[0] + ".*";
+        db.findByRegex("france", "product_name", regex, params)
+            .then((values) => {
+                res.status(200);
+                res.send(values.map(v => {
+                    return {
+                        id: v._id,
+                        name: v.product_name || "unknown",
+                        ingredients: v.ingredients_text_with_allergens_fr || v.ingredients_text_fr || "",
+                        image_url: buildImageURL(v) || null
 
-    const keyWordArray = req.params.key_words.split("+");
-    console.log(keyWordArray);
-    Promise.all(
-        keyWordArray.map(keyWord =>
-            db.findByRegex("france", "product_name", ".*" + keyWord + ".*")
-        )
-    ).then((values) => {
-        res.status(200);
-        const entries = [];
-        values.forEach(value => {
-            value.forEach(entry => entries.push(entry))
+                    }
+                }));
+            }).catch(reason => {
+            console.error(reason);
+            res.status(404);
+            res.send({error: "Not Found"});
+
         });
-        res.send(entries.map(v => {
-            return {
-                id: v._id,
-                name: v.product_name,
-                ingredients: v.ingredients_text_with_allergens_en,
-                image_url: buildImageURL(v)
-
-            }
-        }));
-    }).catch(reason => {
-        console.error(reason);
-        res.status(404);
-        res.send("Not Found");
-
-    });
+    }
 
 });
 
-router.get('/id/:id', (req, res, next) => {
+router.get('/item/:id', (req, res, next) => {
     db.findOneBy("france", {_id: req.params.id})
         .then(value => {
             console.log(value);
@@ -93,7 +126,7 @@ router.get('/id/:id', (req, res, next) => {
         .catch(reason => {
             res.status(404);
             console.log(reason);
-            res.send("Resource not found");
+            res.send({error: "Resource not found"});
         })
 });
 

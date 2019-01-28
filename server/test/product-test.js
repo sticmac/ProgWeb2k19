@@ -26,13 +26,26 @@ describe('Product', function () {
                 .then(json => {
                     assert.ok(!!json)
                 })
-        })
+        });
 
-        // it('should list all products', function () {
-        //     fetch('http://localhost:3000/products')
-        //         .then(res => res.json())
-        //         .then(json => console.log(json));
-        // });
+        it('should return first page of the list products', function () {
+            return fetch('http://localhost:3000/products?pageLength=10&pageNumber=1')
+                .then(res => res.json())
+                .then(json => {
+                    assert.equal(10, json.length)
+                });
+        });
+
+        it('should return an error about query params', function () {
+            return fetch('http://localhost:3000/products?pageLength=10')
+                .then(res => {
+                    assert.equal(400, res.status);
+                    return res.json();
+                })
+                .then(json => {
+                    assert.equal("Cannot use 'pageLength' without 'pageNumber'", json.error)
+                })
+        });
 
     });
 });
