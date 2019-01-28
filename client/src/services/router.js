@@ -4,13 +4,21 @@ import VueRouter from 'vue-router'
 // Views components
 import ProductHome from './../components/Product_Home.vue'
 import RecipeSocialNetworkView from './../components/views/RecipeSocialNetworkView.vue'
+import RecipeListView from './../components/views/RecipeListView.vue'
+import RecipeView from './../components/views/RecipeView.vue'
 
 Vue.use(VueRouter);
 
 const routes = [
     { path: '/', redirect: '/home' },
     { path: '/home', component: ProductHome },
-    { path: '/recipes', component: RecipeSocialNetworkView },
+    { path: '/recipes', 
+        component: RecipeSocialNetworkView,
+        children: [
+            { path: '', component: RecipeListView },
+            { path: ':id', component: RecipeView },
+        ]
+    },
   ]
   
 const router = new VueRouter({

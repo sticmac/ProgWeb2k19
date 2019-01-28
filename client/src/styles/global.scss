@@ -1,5 +1,7 @@
 @charset "utf-8";
 
+
+
 // Import a Google Font
 @import url('https://fonts.googleapis.com/css?family=Nunito:400,700');
 
@@ -24,6 +26,11 @@ $grey-light: $beige-light;
 $primary: $blue;
 $warning: $orange;
 $link: $blue;
+
+// hover effects
+$activeColor: $primary;
+@import './../../node_modules/hover.css/scss/hover.scss';
+
 
 // Imports for Buefy
 @import './../../node_modules/buefy/src/scss/buefy-build.scss'; 

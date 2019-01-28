@@ -1,5 +1,5 @@
 <template>
-<div class="card">
+<div class="card hvr-underline-from-center" @click="recipeClicked()">
   <div class="card-image">
     <figure class="image is-4by3">
       <img :src="this.recipe.image" alt="Placeholder image">
@@ -32,10 +32,17 @@ export default {
     },
     props : {
         recipe : null
+    },
+    methods : {
+        recipeClicked(){
+            this.$router.push('/recipes/'+this.recipe.id);
+        }
     }
 }
 </script>
 
-<style>
-
+<style scoped>
+    .card:hover {
+        cursor: pointer
+    }
 </style>

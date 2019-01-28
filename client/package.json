@@ -12,6 +12,7 @@
   "dependencies": {
     "buefy": "^0.7.1",
     "express": "^4.16.4",
+    "hover.css": "^2.3.2",
     "npm": "^6.7.0",
     "style-resources-loader": "^1.2.1",
     "vue": "^2.5.21",
