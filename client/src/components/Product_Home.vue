@@ -56,6 +56,7 @@
 </template>
 
 <script>
+/* eslint-disable */
 export default {
   name: "ProductHome",
   data: function() {
@@ -74,7 +75,6 @@ export default {
     }
   },
   created(){
-    console.log("created");
     this.fetchItems();
   }
 };
