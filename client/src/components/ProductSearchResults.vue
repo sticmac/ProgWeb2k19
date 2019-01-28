@@ -1,16 +1,24 @@
 <template>
     <div class="container">
-        <SearchResult v-for="result in results" v-bind:key="result.name" v-bind:meal="result"/>
+        <div v-if="loaded && results.length === 0">
+            Aucun résultat n'a été trouvé... :-(
+        </div>
+        <div v-else-if="loaded">
+            <SearchResult v-for="result in results" v-bind:key="result.name" v-bind:meal="result"/>
+        </div>
+        <Loading v-else/>
     </div>
 </template>
 
 <script>
 import SearchResult from "./SearchResult";
+import Loading from "./Loading";
 export default {
     props: ["q"],
     data: function() {
         return {
-            results: []
+            results: [],
+            loaded: false
         }
     },
     mounted() {
@@ -39,6 +47,7 @@ export default {
                         this.results.push(element);
                     });
 
+                    this.loaded = true; //loading is finished
                 }).catch(function(err) {
                     console.log(err);
                 });
@@ -50,7 +59,8 @@ export default {
 
     },
     components: {
-        SearchResult
+        SearchResult,
+        Loading
     }
 }
 </script>
