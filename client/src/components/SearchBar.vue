@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <form v-on:submit="$emit('search', searchArg)">
         <b-field grouped>
         <b-input
             placeholder="Rechercher un produit ..."
@@ -51,7 +51,7 @@
             </div>
         </div>
         </b-collapse>
-    </div>
+    </form>
 </template>
 
 <script>
