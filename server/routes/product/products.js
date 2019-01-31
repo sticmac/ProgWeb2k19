@@ -1,101 +1,153 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
 const db = require("../../modules/db/mongoClient");
 
 function buildImageURL(item) {
-    // src="https://static.openfoodfacts.org/images/products/000/000/003/0113/ingredients_fr.17.200.jpg"
-    if (!!item.images) {
-        let str = "https://static.openfoodfacts.org/images/products/";
-        if (item.images.front_fr) {
-            let chunk = [];
-            for (let i = 0; i < item._id.length; i += 3) {
-                chunk.push(item._id.substring(i, i + 3));
-            }
-            if (chunk[chunk.length - 1].length < 3) {
-                chunk[chunk.length - 2] += chunk[chunk.length - 1];
-                chunk = chunk.filter((value, index) => index !== chunk.length - 1)
-            }
-            str += chunk.join("/") + "/front_fr";
-            const front = item.images.front_fr;
-            str += "." + front.rev + ".full.jpg";
-            return str
-        }
-        return null;
-    } else {
-        return null;
+  // src="https://static.openfoodfacts.org/images/products/000/000/003/0113/ingredients_fr.17.200.jpg"
+  if (!!item.images) {
+    let str = "https://static.openfoodfacts.org/images/products/";
+    if (item.images.front_fr) {
+      let chunk = [];
+      for (let i = 0; i < item._id.length; i += 3) {
+        chunk.push(item._id.substring(i, i + 3));
+      }
+      if (chunk[chunk.length - 1].length < 3) {
+        chunk[chunk.length - 2] += chunk[chunk.length - 1];
+        chunk = chunk.filter((value, index) => index !== chunk.length - 1);
+      }
+      str += chunk.join("/") + "/front_fr";
+      const front = item.images.front_fr;
+      str += "." + front.rev + ".full.jpg";
+      return str;
     }
-
-
+    return null;
+  } else {
+    return null;
+  }
 }
 
+function getParams(req, res) {
+  let params = {};
+
+  if (!req.query.pageLength && req.query.pageNumber) {
+    res.status(400);
+    res.send({ error: "Cannot use 'pageNumber' without 'pageLength'" });
+    return null;
+  } else if (req.query.pageLength && !req.query.pageNumber) {
+    res.status(400);
+    res.send({ error: "Cannot use 'pageLength' without 'pageNumber'" });
+    return null;
+  }
+  if (!!req.query.pageLength && !!req.query.pageNumber) {
+    params.pageLength = parseInt(req.query.pageLength);
+    params.pageNumber = parseInt(req.query.pageNumber);
+  }
+  if (params.pageNumber <= 0) {
+    res.status(400);
+    res.send({ error: "Page number must superior or equal to '1'." });
+    return null;
+  }
+  return params;
+}
 
 /* GET home page. */
-router.get('/', (req, res, next) => {
-
-    db.findAll("france")
-        .then(value => {
-            res.status(200);
-
-            res.send(value.map(v =>
-                ({
-                    name: v.product_name,
-                    ingredients: v.ingredients_text_with_allergens_en
-                })))
-        })
-        .catch(reason => {
-            console.error(reason);
-            res.status(404);
-            res.send("Not Found");
-        })
-
-
-});
-
-router.get('/:key_words', (req, res, next) => {
-
-    const keyWordArray = req.params.key_words.split("+");
-    console.log(keyWordArray);
-    Promise.all(
-        keyWordArray.map(keyWord =>
-            db.findByRegex("france", "product_name", ".*" + keyWord + ".*")
-        )
-    ).then((values) => {
+router.get("/", (req, res, next) => {
+  const params = getParams(req, res);
+  if (!!params) {
+    db.findAll("france", params)
+      .then(value => {
         res.status(200);
-        const entries = [];
-        values.forEach(value => {
-            value.forEach(entry => entries.push(entry))
-        });
-        res.send(entries.map(v => {
-            return {
-                id: v._id,
-                name: v.product_name,
-                ingredients: v.ingredients_text_with_allergens_en,
-                image_url: buildImageURL(v)
 
-            }
-        }));
-    }).catch(reason => {
+        res.send(
+          value.map(v => {
+            console.log({
+              id: v._id,
+              name: v.product_name || "unknown",
+              ingredients:
+                v.ingredients_text_with_allergens_fr ||
+                v.ingredients_text_fr ||
+                "",
+              image_url: buildImageURL(v) || null
+            });
+            return {
+              id: v._id,
+              name: v.product_name || "unknown",
+              ingredients:
+                v.ingredients_text_with_allergens_fr ||
+                v.ingredients_text_fr ||
+                "",
+              image_url: buildImageURL(v) || null
+            };
+          })
+        );
+      })
+      .catch(reason => {
         console.error(reason);
         res.status(404);
         res.send("Not Found");
+      });
+  }
+});
 
+router.get("/:key_words", (req, res, next) => {
+  const params = getParams(req, res);
+  if (!!params) {
+    const keyWordArray = req.params.key_words.split("+");
+    console.log(".*(" + keyWordArray.join("|") + ")+.*");
+    const regex =
+      keyWordArray.length > 1
+        ? ".*(" + keyWordArray.join("|") + ")+.*"
+        : ".*" + keyWordArray[0] + ".*";
+    db.findByRegex("france", "product_name", regex, params)
+      .then(values => {
+        res.status(200);
+        res.send(
+          values.map(v => {
+            return {
+              id: v._id,
+              name: v.product_name || "unknown",
+              ingredients:
+                v.ingredients_text_with_allergens_fr ||
+                v.ingredients_text_fr ||
+                "",
+              image_url: buildImageURL(v) || null
+            };
+          })
+        );
+      })
+      .catch(reason => {
+        console.error(reason);
+        res.status(404);
+        res.send({ error: "Not Found" });
+      });
+    res
+  }
+});
+
+router.get("/item/:id", (req, res, next) => {
+  db.findOneBy("france", { _id: req.params.id })
+    .then(v => {
+      console.log(v);
+      res.status(200);
+      res.send({
+        id: v._id,
+        name: v.product_name,
+        ingredients: v.ingredients_text_with_allergens_fr,
+        image_url: buildImageURL(v),
+        quantity: v.quantity,
+        brands: v.brands,
+        nutriments: v.nutriments,
+        packaging: v.packaging,
+        categories: v.categories,
+        categories_hierarchy: v.categories_hierarchy,
+        serving_size: v.serving_size
+      });
+    })
+    .catch(reason => {
+      res.status(404);
+      console.log(reason);
+      res.send({ error: "Resource not found" });
     });
-
 });
-
-router.get('/id/:id', (req, res, next) => {
-    db.findOneBy("france", {_id: req.params.id})
-        .then(value => {
-            console.log(value);
-            res.status(200);
-            res.send(value);
-        })
-        .catch(reason => {
-            res.status(404);
-            console.log(reason);
-            res.send("Resource not found");
-        })
-});
-
 
 module.exports = router;

@@ -1,5 +1,7 @@
 @charset "utf-8";
 
+
+
 // Import a Google Font
 @import url('https://fonts.googleapis.com/css?family=Nunito:400,700');
 
@@ -9,7 +11,7 @@ $widescreen: 1200px;
 
 // Set your brand colors
 $purple: rgb(119, 77, 138);
-$pink: #FA7C91;
+$orange: rgb(255, 115, 0);
 $brown: #757763;
 $green: #2af598;
 $blue: #08aeea;
@@ -22,7 +24,13 @@ $family-sans-serif: "Nunito", sans-serif;
 $grey-dark: $brown;
 $grey-light: $beige-light;
 $primary: $blue;
+$warning: $orange;
 $link: $blue;
+
+// hover effects
+$activeColor: $primary;
+@import './../../node_modules/hover.css/scss/hover.scss';
+
 
 // Imports for Buefy
 @import './../../node_modules/buefy/src/scss/buefy-build.scss'; 

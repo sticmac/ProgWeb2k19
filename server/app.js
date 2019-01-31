@@ -5,8 +5,9 @@ const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 
 const indexRouter = require('./routes/index');
-// const nutri_score = require('./routes/nutri_score');
+const nutri_score = require('./routes/nutri_score');
 const products = require('./routes/product/products');
+const recipes = require('./routes/recipes');
 const app = express();
 
 // view engine setup
@@ -24,8 +25,9 @@ app.use(express.urlencoded({extended: false}));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-// app.use('/nutriscore', nutri_score);
+app.use('/nutriscore', nutri_score);
 app.use('/products', products);
+app.use('/recipes', recipes);
 // *****************************
 // IMPORTANT:
 // This route needs to be the last route declared !!!
