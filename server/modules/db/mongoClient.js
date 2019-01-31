@@ -18,6 +18,8 @@ client.connect((err) => {
     }
     db = client.db(dbName);
 });
+//TODO:: use on connection by function to ensure the connection is reset each time.
+//That would allow to not have to reboot server when connection is down for a few sec
 
 function listCollections() {
     return new Promise((resolve, reject) => {
@@ -67,6 +69,7 @@ module.exports = {
 
     },
     insertOne: (collection, document) => {
+        console.log(document);
         return new Promise((resolve, reject) => {
             db.collection(collection)
                 .insertOne(document, (err, result) => {

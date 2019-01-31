@@ -26,6 +26,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/nutriscore', nutri_score);
 app.use('/products', products);
+app.use('/recipes', recipes);
 // *****************************
 // IMPORTANT:
 // This route needs to be the last route declared !!!
