@@ -17,7 +17,7 @@
         <li @click="select(1)" :class="{ 'is-active' : this.selected === 1}">
           <a>
             <span class="icon is-medium"><i class="fas fa-list-ul" aria-hidden="true"></i></span>
-            <span>Recette</span>
+            <span>Recettes</span>
           </a>
         </li>
       </ul>
