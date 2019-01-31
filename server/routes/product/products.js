@@ -121,21 +121,6 @@ router.get("/:key_words", (req, res, next) => {
         res.send({ error: "Not Found" });
       });
     res
-      .send(
-        entries.map(v => {
-          return {
-            id: v._id,
-            name: v.product_name,
-            ingredients: v.ingredients_text_with_allergens_en,
-            image_url: buildImageURL(v)
-          };
-        })
-      )
-      .catch(reason => {
-        console.error(reason);
-        res.status(404);
-        res.send("Not Found");
-      });
   }
 });
 
