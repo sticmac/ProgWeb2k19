@@ -1,18 +1,18 @@
 <template>
     <form v-on:submit="$emit('search', searchArg)">
         <b-field grouped>
-        <b-input
-            placeholder="Rechercher un produit ..."
-            size="is-large"
-            icon="search"
-            v-model="searchArg"
-            expanded
-        ></b-input>
-        <p class="control">
-            <a class="button is-link is-large" v-on:click="$emit('search', searchArg)" :disabled="searchArg.length === 0">
-            <span>Rechercher</span>
-            </a>
-        </p>
+            <b-input
+                placeholder="Rechercher un produit ..."
+                size="is-large"
+                icon="search"
+                v-model="searchArg"
+                expanded
+            ></b-input>
+            <p class="control">
+                <a class="button is-link is-large" v-on:click="$emit('search', searchArg)" :disabled="searchArg.length === 0">
+                <span>Rechercher</span>
+                </a>
+            </p>
         </b-field>
 
         <b-collapse class="card" :open="false">

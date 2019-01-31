@@ -6,7 +6,8 @@
 </template>
 
 <script>
-import SearchBar from "./SearchBar"
+import SearchBar from "../search/SearchBar"
+
 export default {
   name: "ProductHome",
   components: {
