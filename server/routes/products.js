@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const db = require("../../modules/db/mongoClient");
+const db = require("../modules/db/mongoClient");
 
 function buildImageURL(item) {
     // src="https://static.openfoodfacts.org/images/products/000/000/003/0113/ingredients_fr.17.200.jpg"
@@ -88,6 +88,7 @@ router.get('/', (req, res, next) => {
 
 });
 
+//TODO:: check should not be case sensible
 router.get('/:key_words', (req, res, next) => {
     const params = getParams(req, res);
     if (!!params) {
@@ -106,12 +107,13 @@ router.get('/:key_words', (req, res, next) => {
 
                     }
                 }));
-            }).catch(reason => {
-            console.error(reason);
-            res.status(404);
-            res.send({error: "Not Found"});
+            })
+            .catch(reason => {
+                console.error(reason);
+                res.status(404);
+                res.send({error: "Not Found"});
 
-        });
+            });
     }
 
 });
@@ -119,13 +121,16 @@ router.get('/:key_words', (req, res, next) => {
 router.get('/item/:id', (req, res, next) => {
     db.findOneBy("france", {_id: req.params.id})
         .then(value => {
+            console.log("**********");
+            console.log(req.params.id);
             console.log(value);
+            console.log("**********");
             res.status(200);
             res.send(value);
         })
         .catch(reason => {
+            console.error(reason);
             res.status(404);
-            console.log(reason);
             res.send({error: "Resource not found"});
         })
 });

@@ -8,19 +8,22 @@ router.get('/item/:id', (req, res, next) => {
 
     db.findOneBy("france", {
         _id: req.params.id
-    }).then(value => {
+    })
+        .then(value => {
             res.status(200);
-            //TODO:: change computing method for the nutri-score
-
+            //TODO:: use promise
+            console.log("************");
+            console.log(value);
+            console.log("************");
             const nutriscore = nutriScore.compute(value.nutriments);
             console.log(nutriscore);
             res.send({nutriscore: nutriscore})
-        }
-    ).catch(reason => {
-        console.error(reason);
-        res.status(404);
-        res.send({error: "Not Found"});
-    })
+        })
+        .catch(reason => {
+            console.error(reason);
+            res.status(404);
+            res.send({error: "Not Found"});
+        })
 
 
 });

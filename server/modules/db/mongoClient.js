@@ -2,7 +2,8 @@ const MongoClient = require('mongodb').MongoClient;
 const assert = require('assert');
 // Connection URL
 // const url = 'mongodb://localhost/off';
-const url = "mongodb://root:toor123@ds159624.mlab.com:59624/mongo-vietnam";
+// "mongodb://root:toor123@ds159624.mlab.com:59624/mongo-vietnam"
+const url = process.env.MONGO_URL || "mongodb://localhost/mongo-vietnam";
 
 // Database Name
 const dbName = 'mongo-vietnam';
@@ -15,11 +16,56 @@ client.connect((err) => {
     if (err) {
         console.error(err);
     }
-    db = client.db(dbName)
+    db = client.db(dbName);
 });
 
+function listCollections() {
+    return new Promise((resolve, reject) => {
+        db.listCollections().toArray(function (err, collInfos) {
+            if (err) {
+                reject(err);
+            }
+            resolve(collInfos);
+        });
+
+    })
+}
+
+function insertMany(collection, documents) {
+    return new Promise((resolve, reject) => {
+        db.collection(collection)
+            .insertMany(documents, (err, result) => {
+                if (err) {
+                    reject(err);
+                }
+                resolve(result);
+            });
+
+    })
+}
 
 module.exports = {
+    clean: () => {
+        listCollections()
+            .then(collections => {
+                    collections.forEach(collection => {
+                        db.collection(collection.name)
+                            .deleteMany({});
+                    })
+                }
+            );
+    },
+    init: (data) => {
+        listCollections()
+            .then(collections => {
+                if (collections.length === 0) {
+                    db.createCollection("france");
+                    db.createCollection("recipes");
+                }
+                insertMany("france", data.products);
+            });
+
+    },
     insertOne: (collection, document) => {
         return new Promise((resolve, reject) => {
             db.collection(collection)
@@ -33,33 +79,19 @@ module.exports = {
         })
     },
     insertMany: (collection, documents) => {
-        return new Promise((resolve, reject) => {
-            db.collection(collection)
-                .insertMany(documents, (err, result) => {
-                    if (err) {
-                        reject(err);
-                    }
-                    resolve(result);
-                });
-
-        })
+        insertMany(collection, documents);
     },
-    listCollection: () => {
-        return new Promise((resolve, reject) => {
-            db.listCollections().toArray(function (err, collInfos) {
-                if (err) {
-                    reject(err);
-                }
-                resolve(collInfos);
-            });
-
-        })
+    listCollections: () => {
+        listCollections();
     },
     findOneBy: (collection, criteria) => {
         return new Promise((resolve, reject) => {
             db.collection(collection).findOne(criteria, (mongoError, objects) => {
                 if (mongoError) {
                     reject(mongoError);
+                }
+                if (!objects){
+                    reject({error: "Not Found."})
                 }
                 resolve(objects);
             })
