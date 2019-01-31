@@ -13,7 +13,6 @@
 <script>
 import SearchResult from "../search/SearchResult";
 import Loading from "../Loading";
-import SearchBar from "../search/SearchBar";
 import Requester from '../../services/requester'
 
 export default {
