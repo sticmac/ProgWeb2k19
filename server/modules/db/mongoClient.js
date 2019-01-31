@@ -112,7 +112,7 @@ module.exports = {
     },
     findByRegex: (collection, object_key, regex, params) => {
         const criteria = {};
-        criteria[object_key] = {$regex: regex};
+        criteria[object_key] = {$regex: regex, $options: "i"};
         // console.log(criteria);
         return new Promise((resolve, reject) => {
             (!!params.pageLength && !!params.pageNumber ?
