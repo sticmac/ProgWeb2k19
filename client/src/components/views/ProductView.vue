@@ -23,7 +23,7 @@
           <div class="info-tag categories">
             <b-taglist>
               <b-tag type="is-dark">Catégories</b-tag>
-              <b-tag type="is-info">TODO</b-tag>
+              <b-tag v-for="(category, index) in categories" v-bind:key="index" type="is-info">{{category}}</b-tag>
             </b-taglist>
           </div>
           <h2 class="title">Ingrédients :</h2>
@@ -65,6 +65,7 @@ export default {
       productExists: true,
       nutritionDataAvailable: true,
       data: [],
+      categories: [],
       columns: [
         {
           field: "nutrition_attribute_name",
@@ -95,6 +96,11 @@ export default {
           this.parseNutriments(this.product.nutriments);
         } else {
           this.nutritionDataAvailable = false;
+        }
+        if (this.product.categories_hierarchy) {
+          this.categories = this.parseCategories(
+            this.product.categories_hierarchy
+          );
         }
         document.getElementById("ingredients").innerHTML = this.product
           .ingredients
@@ -168,6 +174,13 @@ export default {
           return 1;
         }
         return 0;
+      });
+    },
+    parseCategories(categories) {
+      return categories.map(category => {
+        const v = category.split(":")[1];
+        v.replace(/-/g, " ");
+        return this.capitalizeFirstLetter(v);
       });
     }
   }

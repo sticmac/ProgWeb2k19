@@ -130,7 +130,19 @@ router.get('/item/:id', (req, res, next) => {
             console.log(value);
             console.log("**********");
             res.status(200);
-            res.send(value);
+            res.send({
+                id: value._id,
+                name: value.product_name,
+                ingredients: value.ingredients_text_with_allergens_fr,
+                image_url: buildImageURL(value),
+                quantity: value.quantity,
+                brands: value.brands,
+                nutriments: value.nutriments,
+                packaging: value.packaging,
+                categories: value.categories,
+                categories_hierarchy: value.categories_hierarchy,
+                serving_size: value.serving_size
+              });
         })
         .catch(reason => {
             console.error(reason);
