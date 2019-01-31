@@ -2,7 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 
 // Views components
-import ProductView from './../components/ProductView.vue';
+import ProductView from './../components/views/ProductView.vue';
 import ProductHomeView from './../components/views/ProductHomeView.vue'
 import RecipeSocialNetworkView from './../components/views/RecipeSocialNetworkView.vue'
 import RecipeListView from './../components/views/RecipeListView.vue'
@@ -13,9 +13,8 @@ Vue.use(VueRouter);
 
 const routes = [
     { path: '/', redirect: '/home' },
-    { path: '/home', component: ProductHome },
-    { path: '/item/:productId', component: ProductView, props: true},
     { path: '/home', component: ProductHomeView },
+    { path: '/item/:productId', component: ProductView, props: true},
     { path: '/recipes', 
         component: RecipeSocialNetworkView,
         children: [

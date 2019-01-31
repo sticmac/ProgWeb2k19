@@ -1,6 +1,6 @@
 <template>
     <div class="container">
-        <SearchBar v-on:search="routeChange($event)" style="margin-bottom: 2em"/>
+        <SearchBar ref="bar" v-on:search="routeChange($event)" style="margin-bottom: 2em"/>
         <div v-if="loaded && results.length === 0">
             Aucun résultat n'a été trouvé... :-(
         </div>
@@ -26,6 +26,7 @@ export default {
         }
     },
     mounted() {
+        this.$refs.bar.setValue(this.q.split('+').join(' '));
         this.search(this.q);
     },
     methods: {
