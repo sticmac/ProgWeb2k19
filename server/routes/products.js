@@ -92,7 +92,6 @@ router.get('/', (req, res, next) => {
 
 });
 
-//TODO:: check should not be case sensible
 router.get('/:key_words', (req, res, next) => {
     const params = getParams(req, res);
     if (!!params) {
