@@ -3,7 +3,7 @@ const {ObjectID} = require("mongodb");
 const express = require('express');
 const router = express.Router();
 const db = require("../modules/db/mongoClient");
-const COLLECTION = "receipes";
+const COLLECTION = "recipes";
 
 router.get("/", (req, res, next) => {
     if (!req.query.pageLength && req.query.pageNumber) {
