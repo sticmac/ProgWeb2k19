@@ -7,15 +7,19 @@ function buildImageURL(item) {
     if (!!item.images) {
         let str = "https://static.openfoodfacts.org/images/products/";
         if (item.images.front_fr) {
-            let chunk = [];
-            for (let i = 0; i < item._id.length; i += 3) {
-                chunk.push(item._id.substring(i, i + 3));
+            if (item._id.length === 13) {
+                let chunk = [];
+                for (let i = 0; i < item._id.length; i += 3) {
+                    chunk.push(item._id.substring(i, i + 3));
+                }
+                if (chunk[chunk.length - 1].length < 3) {
+                    chunk[chunk.length - 2] += chunk[chunk.length - 1];
+                    chunk = chunk.filter((value, index) => index !== chunk.length - 1)
+                }
+                str += chunk.join("/") + "/front_fr";
+            } else {
+                str += item._id + "/front_fr";
             }
-            if (chunk[chunk.length - 1].length < 3) {
-                chunk[chunk.length - 2] += chunk[chunk.length - 1];
-                chunk = chunk.filter((value, index) => index !== chunk.length - 1)
-            }
-            str += chunk.join("/") + "/front_fr";
             const front = item.images.front_fr;
             str += "." + front.rev + ".full.jpg";
             return str
