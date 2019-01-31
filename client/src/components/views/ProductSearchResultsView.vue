@@ -40,6 +40,7 @@ export default {
             
             Requester.getProductsFromArgs(searchArg, (success, products) => {
                 this.results = products;
+                this.loaded = true;
             });
         }
     },
