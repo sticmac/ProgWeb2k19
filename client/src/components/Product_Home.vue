@@ -6,12 +6,10 @@
 </template>
 
 <script>
-import ProductSearchResults from "./ProductSearchResults"
 import SearchBar from "./SearchBar"
 export default {
   name: "ProductHome",
   components: {
-    ProductSearchResults,
     SearchBar
   },
   methods: {

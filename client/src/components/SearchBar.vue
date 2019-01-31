@@ -62,5 +62,10 @@ export default {
       searchArg: this.baseArg ? this.baseArg : "",
     };
   },
+  methods: {
+      setValue: function(value) {
+          this.searchArg = value;
+      }
+  }
 }
 </script>
