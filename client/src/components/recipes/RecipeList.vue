@@ -1,11 +1,15 @@
 <template>
 <div>
-    <div class="columns is-multiline">
+    <div v-if="recipes.length > 0" class="columns is-multiline">
         <div class="column" v-for="(recipe, index) in recipes" :key="index">
             <RecipeItem  :recipe="recipe"/>
         </div>
     </div>
-    
+    <div v-else class="columns is-multiline">
+        <div class="column">
+            <p>Aucune recettes trouvées :(</p>
+        </div>
+    </div>
 </div>
 </template>
 
@@ -140,7 +144,11 @@ export default {
     },
     created(){
         Requester.getRecipes((success, recipes) => {
-            this.results = recipes;
+            if(success) {
+                this.results = recipes;
+                return;
+            }
+            this.results = [];
         });
     }
 }
