@@ -7,6 +7,7 @@ const logger = require('morgan');
 const indexRouter = require('./routes/index');
 const nutri_score = require('./routes/nutri_score');
 const products = require('./routes/products');
+const recipes = require("./routes/recipes");
 const app = express();
 
 // view engine setup
