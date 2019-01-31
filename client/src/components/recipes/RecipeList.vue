@@ -14,6 +14,7 @@
 </template>
 
 <script>
+import Requester from '../../services/requester'
 import RecipeItem from './RecipeItem.vue'
 
 export default {

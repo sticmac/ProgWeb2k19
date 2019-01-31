@@ -18,9 +18,4 @@ router.get('/example', (req, res, next) => {
 
 });
 
-
-router.get(/.*/, (req, res, next) => {
-    res.sendfile("public/index.html");
-});
-
 module.exports = router;
