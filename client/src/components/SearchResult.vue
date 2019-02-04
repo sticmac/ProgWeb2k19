@@ -9,8 +9,7 @@
           <div class="media">
             <div class="media-left">
               <figure class="image is-64x64 is-square">
-                <img v-if="image_url" :src="image_url" class="thumbnail" @error="imageLoadError">
-                <img v-else src="https://bulma.io/images/placeholders/64x64.png" class="thumbnail">
+                <img v-bind:src="meal.image_url" v-bind:alt="meal.name" class="thumbnail">
               </figure>
             </div>
 
@@ -25,17 +24,7 @@
 
 <script>
 export default {
-  props: ['meal'],
-  data(){
-    return {
-      image_url : this.meal.image_url
-    }
-  },
-  methods : {
-    imageLoadError(){
-      this.image_url = "https://bulma.io/images/placeholders/64x64.png"
-    }
-  }
+  props: ['meal']
 }
 </script>
 

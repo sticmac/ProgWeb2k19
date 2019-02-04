@@ -13,6 +13,12 @@ export default class Requester {
         });
     }
 
+    static getProductById(productId, requestCallback) {
+        Fetcher.get('/products/item/' + productId, (success, data) => {
+            requestCallback(success, data);
+        });
+    }
+
     static getRecipes(requestCallback){
         Fetcher.get('/recipes/', (success, data) => {
             requestCallback(success, data);
