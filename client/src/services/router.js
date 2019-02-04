@@ -12,8 +12,12 @@ import ProductSearchResultsView from './../components/views/ProductSearchResults
 Vue.use(VueRouter);
 
 const routes = [
-    { path: '/', redirect: '/home' },
-    { path: '/home', component: ProductHomeView },
+    { path: '/', redirect: '/products' },
+    { path: '/products', component: ProductHomeView,
+        children: [
+            { path: 'search/:q', component: ProductSearchResultsView, name: 'results', props: true }
+        ]
+    },
     { path: '/item/:productId', component: ProductView, props: true},
     { path: '/recipes', 
         component: RecipeSocialNetworkView,
@@ -21,8 +25,7 @@ const routes = [
             { path: '', component: RecipeListView },
             { path: ':id', component: RecipeView },
         ]
-    },
-    { path: '/results/:q', component: ProductSearchResultsView, name: 'results', props: true}
+    }
   ]
   
 const router = new VueRouter({
