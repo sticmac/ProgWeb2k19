@@ -26,8 +26,9 @@ export default {
             recipes :           
             [
                  {
+                    id : 0,
                     name : "Ma recette",
-                    image : "https://www.bbcgoodfood.com/sites/default/files/recipe-collections/collection-image/2013/05/frying-pan-pizza-easy-recipe-collection.jpg",
+                    image : "https://foodrevolution.org/wp-content/uploads/2018/04/blog-featured-diabetes-20180406-1330.jpg",
                     description : "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean justo nibh, commodo sit amet vehicula auctor, tincidunt pretium odio.",
                     price : 5,
                     time_required : 20

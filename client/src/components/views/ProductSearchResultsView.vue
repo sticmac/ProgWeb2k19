@@ -39,7 +39,8 @@ export default {
         }
     },
     watch:{
-        $route (to, from){
+        // eslint-disable-next-line
+        $route(to, from){
             this.search(to.params.q);
         }
     },

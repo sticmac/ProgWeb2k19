@@ -19,11 +19,11 @@ const routes = [
         ]
     },
     { path: '/item/:productId', component: ProductView, props: true},
-    { path: '/recipes', 
+    { path: '/recipes/', 
         component: RecipeSocialNetworkView,
         children: [
             { path: '', component: RecipeListView },
-            { path: ':id', component: RecipeView },
+            { path: ':recipeId', component: RecipeView },
         ]
     }
   ]
