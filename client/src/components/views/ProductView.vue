@@ -7,24 +7,31 @@
           <img :src="this.product.image_url" alt="Product image">
         </div>
         <div class="column">
-          <h2 class="title">Caractéristiques du produit :</h2>
-          <div class="info-tag quantity">
-            <b-taglist attached>
-              <b-tag type="is-dark">Quantity</b-tag>
-              <b-tag type="is-info">{{this.product.quantity}}</b-tag>
-            </b-taglist>
-          </div>
-          <div class="info-tag brand">
-            <b-taglist attached>
-              <b-tag type="is-dark">Brand</b-tag>
-              <b-tag type="is-info">{{this.product.brands ? this.product.brands : "Non spécifié"}}</b-tag>
-            </b-taglist>
-          </div>
-          <div v-if="categories.length > 0" class="info-tag categories">
-            <b-taglist>
-              <b-tag type="is-dark">Catégories</b-tag>
-              <b-tag v-for="(category, index) in categories" v-bind:key="index" type="is-info">{{category}}</b-tag>
-            </b-taglist>
+          <div class="columns">
+            <div class="column">
+              <h2 class="title">Caractéristiques du produit :</h2>
+              <div class="info-tag quantity">
+                <b-taglist attached>
+                  <b-tag type="is-dark">Quantité</b-tag>
+                  <b-tag type="is-info">{{this.product.quantity}}</b-tag>
+                </b-taglist>
+              </div>
+              <div class="info-tag brand">
+                <b-taglist attached>
+                  <b-tag type="is-dark">Marque</b-tag>
+                  <b-tag type="is-info">{{this.product.brands ? this.product.brands : "Non spécifié"}}</b-tag>
+                </b-taglist>
+              </div>
+              <div v-if="categories.length > 0" class="info-tag categories">
+                <b-taglist>
+                  <b-tag type="is-dark">Catégories</b-tag>
+                  <b-tag v-for="(category, index) in categories" v-bind:key="index" type="is-info">{{category}}</b-tag>
+                </b-taglist>
+              </div>
+             </div>
+             <div class="column">
+               <Prices />
+             </div>
           </div>
           <h2 class="title">Ingrédients :</h2>
           <p id="ingredients"></p>
@@ -56,6 +63,7 @@
 
 <script>
 import Requester from "../../services/requester";
+import Prices from "../products/Prices";
 export default {
   name: "ProductView",
   props: ["productId"],
@@ -183,6 +191,9 @@ export default {
         return this.capitalizeFirstLetter(v);
       });
     }
+  },
+  components: {
+    Prices
   }
 };
 </script>
