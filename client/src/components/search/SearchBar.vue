@@ -6,11 +6,11 @@
                 size="is-large"
                 icon="search"
                 v-model="searchArg"
-                @keyup.enter.native="$emit('search', searchArg)"
+                @keyup.enter.native="launchSearch()"
                 expanded
             ></b-input>
             <p class="control">
-                <a class="button is-link is-large" v-on:click="$emit('search', searchArg)" :disabled="searchArg.length === 0">
+                <a class="button is-link is-large" v-on:click="launchSearch()" :disabled="!this.canLaunchSearch">
                 <span>Rechercher</span>
                 </a>
             </p>
@@ -61,11 +61,20 @@ export default {
   data: function() {
     return {
       searchArg: this.baseArg ? this.baseArg : "",
+      canLaunchSearch: false
     };
   },
   methods: {
       setValue: function(value) {
           this.searchArg = value;
+      },
+      launchSearch(){
+          if(this.searchArg!="") this.$emit('search', this.searchArg)
+      }
+  },
+  watch : {
+      searchArg(){
+          this.canLaunchSearch = this.searchArg.trim()!=""
       }
   }
 }

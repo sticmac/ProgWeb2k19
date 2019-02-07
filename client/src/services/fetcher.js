@@ -29,7 +29,7 @@ export default class Fetcher {
             (response) => {
                 if (response.status != 200) {
                     // eslint-disable-next-line
-                    console.error('Looks like there was a problem. Status Code: ' + response.status);
+                    console.warn('Looks like there was a problem. Status Code: ' + response.status);
                     fetchCallback(false, null);
                 }
 
@@ -38,14 +38,14 @@ export default class Fetcher {
 
                 }).catch(function(err) {
                     // eslint-disable-next-line
-                    console.error(err);
+                    console.warn(err);
                     fetchCallback(false, null);
                 });
             }
         )
         .catch(function(err) {
             // eslint-disable-next-line
-            console.error('Fetch Error :-S', err);
+            console.warn('Fetch Error :-S', err);
             fetchCallback(false, null);
         });
     }

@@ -2,7 +2,8 @@
 <div class="card hvr-underline-from-center" @click="recipeClicked()">
   <div class="card-image">
     <figure class="image is-4by3">
-      <img :src="this.recipe.image" alt="Placeholder image">
+      <img v-if="this.recipe.image" :src="this.recipe.image" alt="Image de la recette">
+      <img v-else src="https://bulma.io/images/placeholders/640x480.png" alt="Placeholder image">
     </figure>
   </div>
   <div class="card-content">
