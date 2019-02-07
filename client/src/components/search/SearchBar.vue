@@ -1,11 +1,12 @@
 <template>
-    <form v-on:submit="$emit('search', searchArg)">
+    <div>
         <b-field grouped>
             <b-input
                 placeholder="Rechercher un produit ..."
                 size="is-large"
                 icon="search"
                 v-model="searchArg"
+                @keyup.enter.native="$emit('search', searchArg)"
                 expanded
             ></b-input>
             <p class="control">
@@ -51,7 +52,7 @@
             </div>
         </div>
         </b-collapse>
-    </form>
+    </div>
 </template>
 
 <script>

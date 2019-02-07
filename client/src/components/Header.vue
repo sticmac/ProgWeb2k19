@@ -39,7 +39,7 @@ export default {
     select(value) {
       this.selected = value;
       if (value === 0) {
-          this.$router.push('/home')
+          this.$router.push('/products')
       } else if (value === 1) {
           this.$router.push('/recipes')
       }

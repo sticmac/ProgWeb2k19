@@ -1,5 +1,5 @@
 <template>
-    <div class="box card is-secondary">
+    <div class="product-card box card is-secondary"  v-on:click="goToItem(meal.id)">
         <header class="card-header is-shadowless">
           <p class="card-header-title">
             {{meal.name}}
@@ -24,7 +24,12 @@
 
 <script>
 export default {
-  props: ['meal']
+  props: ['meal'],
+  methods: {
+    goToItem(id) {
+      this.$router.push('/item/' + id);
+    }
+  },
 }
 </script>
 
@@ -44,5 +49,8 @@ export default {
   text-align: justify;  
 }
 
+.product-card {
+  cursor: pointer;
+}
 </style>
 
