@@ -1,39 +1,48 @@
 const mongoClient = require("../mongoClient");
 const {ObjectID} = require("mongodb");
 const AbstractModel = require("./AbstractModel");
-const KEYS = ["id", "name", "image", "description", "price", "time_required", "products"];
+const KEYS = ["id", "name", "image", "description", "price", "time_required", "products", "comments"];
 const COLLECTION = "recipes";
 
 class Recipe extends AbstractModel {
 
     //TODO:: store image as binaries
-    constructor(object) {
+    constructor(object = null) {
         super();
-        this._id = new ObjectID();
-        this.name = object.name;
-        this.image = object.image;
-        this.description = object.description;
-        this.price = object.price;
-        //TODO: compute price using products prices
-        this.time_required = object.time_required;
-        this.products = object.products;
+        if (!!object) {
+            this._id = new ObjectID();
+            this.name = object.name;
+            this.image = object.image;
+            this.description = object.description;
+            this.price = object.price;
+            //TODO: compute price using products prices
+            this.time_required = object.time_required;
+            this.products = object.products;
+            this.comments = [];
+            this.lastCommentId = 0;
+        }
 
     }
 
     toJson() {
         return {
-            id: this._id,
+            _id: this._id,
             name: this.name,
             image: this.image,
             description: this.description,
             price: this.price,
             time_required: this.time_required,
-            products: this.products
+            products: this.products,
+            comments: this.comments,
         }
     }
 
     save() {
-        return mongoClient.insertOne(COLLECTION, this.toJson());
+        return new Promise((resolve, reject) => mongoClient.insertOne(COLLECTION, this.toJson())
+            .then(value => {
+                resolve(this.toJson())
+            })
+            .catch(reason => reject(reason)));
     }
 
     update(newValues) {
@@ -60,11 +69,14 @@ class Recipe extends AbstractModel {
                     case KEYS[6] :
                         this.products = newValues[key];
                         break;
+                    case KEYS[7] :
+                        this.comments = newValues[key];
+                        break;
                     default:
                         throw Error("'" + key + "' is not a property of Recipe.");
                 }
             }
-            mongoClient.updateOne(COLLECTION, id, this.toJson())
+            mongoClient.updateOne(COLLECTION, this._id, this.toJson())
                 .then(() => resolve(this))
                 .catch(reason => reject(reason))
         });
@@ -78,23 +90,52 @@ class Recipe extends AbstractModel {
         })
     }
 
+    addComment(comment) {
+        this.lastCommentId += 1;
+        this.comments.push({
+            id: this.lastCommentId,
+            content: comment.content,
+            author: comment.author,
+            date: comment.date
+        })
+    }
+}
+
+function fromJson(json) {
+    let recipe = new Recipe();
+    recipe.id = json._id;
+    recipe.name = json.name;
+    recipe.image = json.image;
+    recipe.description = json.description;
+    recipe.price = json.price;
+    recipe.time_required = json.time_required;
+    recipe.products = json.products;
+    recipe.comments = [];
+    recipe.lastCommentId = 0;
+    return recipe;
 }
 
 module.exports = {
     get: (id) => {
         return new Promise((resolve, reject) =>
-            mongoClient.findOneBy(COLLECTION, {_id: id})
-                .then(value => resolve(new Recipe(value)))
+            mongoClient.findOneBy(COLLECTION, {_id: new ObjectID(id)})
+                .then(value => resolve(fromJson(value)))
                 .catch(reason => reject(reason)))
     },
     build: (object) => {
         let missingKeys = [];
-        for (let key in KEYS) {
-            if (!(key in object)) {
-                missingKeys.push(key);
-            }
+        if (!Object.keys(object).find(value => value === "products")) {
+            object.products = []
+        }
+        if (!Object.keys(object).find(value => value === "comments")) {
+            object.comments = []
         }
 
+        KEYS.forEach(key => {
+            if (key !== 'id' && !Object.keys(object).find(value => value === key)) {
+                missingKeys.push(key);
+            }
+        });
         if (missingKeys.length > 0) {
             throw Error({
                 error: 'Some attributes are missing.'
@@ -106,8 +147,9 @@ module.exports = {
     findAll: (params) => {
         return new Promise((resolve, reject) => {
             mongoClient.findAll(COLLECTION, params)
-                .then(values =>
-                    resolve(values.map(v => new Recipe(v))))
+                .then(values => {
+                    resolve(values.map(v => new Recipe(v)))
+                })
                 .catch(reason => reject(reason))
         });
     }

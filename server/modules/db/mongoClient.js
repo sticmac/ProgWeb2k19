@@ -92,7 +92,6 @@ module.exports = {
 
     },
     insertOne: (collection, document) => {
-        console.log(document);
         return new Promise((resolve, reject) => {
             db.collection(collection)
                 .insertOne(document, (err, result) => {

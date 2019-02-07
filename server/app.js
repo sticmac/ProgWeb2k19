@@ -8,6 +8,7 @@ const indexRouter = require('./routes/index');
 const nutri_score = require('./routes/nutri_score');
 const products = require('./routes/products');
 const recipes = require("./routes/recipes");
+const comments = require("./routes/comments");
 const token = require("./routes/token");
 const account = require("./routes/account");
 const auth = require("./routes/auth");
@@ -35,6 +36,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/nutriscore', auth.optional, nutri_score);
 app.use('/products', auth.optional, products);
 app.use('/recipes', auth.optional, recipes);
+app.use('/recipes', auth.optional, comments);
 app.use('/token', auth.optional, token);
 app.use('/account', auth.optional, account);
 // *****************************
