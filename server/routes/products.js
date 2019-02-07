@@ -3,29 +3,45 @@ const router = express.Router();
 const db = require("../modules/db/mongoClient");
 const auth = require("./auth");
 
+function getChunk(id) {
+    let chunk = [];
+    for (let i = 0; i < id.length; i += 3) {
+        chunk.push(id.substring(i, i + 3));
+    }
+    if (chunk[chunk.length - 1].length < 3) {
+        chunk[chunk.length - 2] += chunk[chunk.length - 1];
+        chunk = chunk.filter((value, index) => index !== chunk.length - 1)
+    }
+    return chunk;
+}
+
 function buildImageURL(item) {
     // src="https://static.openfoodfacts.org/images/products/000/000/003/0113/ingredients_fr.17.200.jpg"
     if (!!item.images) {
         let str = "https://static.openfoodfacts.org/images/products/";
-        if (item.images.front_fr) {
-            if (item._id.length === 13) {
-                let chunk = [];
-                for (let i = 0; i < item._id.length; i += 3) {
-                    chunk.push(item._id.substring(i, i + 3));
-                }
-                if (chunk[chunk.length - 1].length < 3) {
-                    chunk[chunk.length - 2] += chunk[chunk.length - 1];
-                    chunk = chunk.filter((value, index) => index !== chunk.length - 1)
-                }
-                str += chunk.join("/") + "/front_fr";
-            } else {
-                str += item._id + "/front_fr";
-            }
-            const front = item.images.front_fr;
-            str += "." + front.rev + ".full.jpg";
-            return str
+        // console.log(item);
+        if (item._id.length === 13) {
+            let chunk = getChunk(item._id);
+            str += chunk.join("/") + "/";
+        } else {
+            str += item._id + "/";
         }
-        return null;
+        let image = null, key = null;
+        if (!!item.images.front_fr) {
+            console.log("front");
+            key = "front_fr";
+            image = item.images.front_fr;
+        } else {
+            console.log("not front");
+            console.log(Object.keys(item.images));
+            key = Object.keys(item.images).find(value => RegExp("front").test(value));
+            image = item.images[key];
+        }
+        console.log("KEY", key);
+        console.log("IMAGE: ", image);
+        str += key + "." + image.rev + ".full.jpg";
+        console.log(str);
+        return str
     } else {
         return null;
     }
@@ -138,7 +154,7 @@ router.get('/item/:id', auth.optional, (req, res, next) => {
                 categories: value.categories,
                 categories_hierarchy: value.categories_hierarchy,
                 serving_size: value.serving_size
-              });
+            });
         })
         .catch(reason => {
             console.error(reason);
@@ -149,3 +165,4 @@ router.get('/item/:id', auth.optional, (req, res, next) => {
 
 
 module.exports = router;
+
