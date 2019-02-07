@@ -21,7 +21,7 @@ router.post("/", auth.optional, (req, res, next) => {
             },
         });
     }
-    const user = {email: email, password: password};
+
     passport.authenticate('local', {session: false}, (err, passportUser, info) => {
         if (err) {
             return next(err);
@@ -31,7 +31,6 @@ router.post("/", auth.optional, (req, res, next) => {
             const user = passportUser;
             return res.json({user: user});
         }
-
         return res.status(400).info;
     })(req, res, next);
 });
