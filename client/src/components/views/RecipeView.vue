@@ -36,18 +36,9 @@
 
     <!-- Error or recipe not found -->
     <div v-if="!isLoading && !recipe">
-        <section class="hero is-primary is-fullheight-with-navbar">
-            <div class="hero-body">
-                <div class="container">
-                <h1 class="title">
-                    Ohoh !
-                </h1>
-                <h2 class="subtitle">
-                    La recette que tu cherches n'existe pas ou n'existe plus :/
-                </h2>
-                </div>
-            </div>
-        </section>
+        <ErrorDisplay :description="'La recette que tu cherches n\'existe pas ou n\'existe plus :/'"
+        :btnText="'Retourner à la liste des recettes'"
+        :btnLink="'/recipes'"/>
     </div>
 </div>
     
@@ -59,13 +50,15 @@ import RecipeItemIcons from '../recipes/RecipeItemIcons.vue'
 import Requester from '../../services/requester'
 import Divider from '../Divider.vue'
 import ProductList from '../ProductList.vue'
+import ErrorDisplay from '../ErrorDisplay.vue'
 
 export default {
     components :{
         RecipeItemIcons,
         CommentSection,
         ProductList,
-        Divider
+        Divider,
+        ErrorDisplay
     },
     data(){
         return {
@@ -81,31 +74,31 @@ export default {
                 this.recipe = recipe;
                 return;
             }else{
-                this.recipe =  {
-                    id : 0,
-                    name : "Ma recette",
-                    image : "https://foodrevolution.org/wp-content/uploads/2018/04/blog-featured-diabetes-20180406-1330.jpg",
-                    description : "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean justo nibh, commodo sit amet vehicula auctor, tincidunt pretium odio.",
-                    price : 5,
-                    time_required : 20,
-                    products : [
-                        {
-                            name : "Riz",
-                            image : "url",
-                            quantity : "150 g"
-                        },
-                        {
-                            name : "Riz",
-                            image : "url",
-                            quantity : "150 g"
-                        },
-                        {
-                            name : "Riz",
-                            image : "url",
-                            quantity : "150 g"
-                        }
-                    ]
-                };
+                // this.recipe =  {
+                //     id : 0,
+                //     name : "Ma recette",
+                //     image : "https://foodrevolution.org/wp-content/uploads/2018/04/blog-featured-diabetes-20180406-1330.jpg",
+                //     description : "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean justo nibh, commodo sit amet vehicula auctor, tincidunt pretium odio.",
+                //     price : 5,
+                //     time_required : 20,
+                //     products : [
+                //         {
+                //             name : "Riz",
+                //             image : "url",
+                //             quantity : "150 g"
+                //         },
+                //         {
+                //             name : "Riz",
+                //             image : "url",
+                //             quantity : "150 g"
+                //         },
+                //         {
+                //             name : "Riz",
+                //             image : "url",
+                //             quantity : "150 g"
+                //         }
+                //     ]
+                // };
             }
         });
     },
