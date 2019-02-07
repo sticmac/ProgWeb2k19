@@ -1,5 +1,5 @@
 <template>
-    <div class="box card is-secondary">
+    <div class="product-card box card is-secondary"  v-on:click="goToItem(meal.id)">
         <header class="card-header is-shadowless">
           <p class="card-header-title">
             {{meal.name}}
@@ -34,6 +34,9 @@ export default {
   methods : {
     imageLoadError(){
       this.image_url = "https://bulma.io/images/placeholders/64x64.png"
+    },
+    goToItem(id) {
+      this.$router.push('/item/' + id);
     }
   }
 }
@@ -55,5 +58,8 @@ export default {
   text-align: justify;  
 }
 
+.product-card {
+  cursor: pointer;
+}
 </style>
 

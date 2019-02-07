@@ -1,7 +1,16 @@
 const assert = require('assert');
 const fetch = require("node-fetch");
+const mongo = require("../modules/db/mongoClient");
+const data = require('./utils/data');
+
 
 describe('Recipes', function () {
+    beforeEach(() => {
+        mongo.init(data);
+    });
+    afterEach(() => {
+        mongo.clean();
+    });
     describe("Add and update receipes", function () {
         it('should add a new recipe in the db', function () {
             return fetch("http://localhost:3000/recipes/", {
@@ -23,7 +32,7 @@ describe('Recipes', function () {
                 .then(res => {
                     assert.equal(200, res.status);
                     // console.log(res);
-                    res.json()
+                    return res.json()
                 })
                 .then(json => console.log(json))
         });
