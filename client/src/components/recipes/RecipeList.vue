@@ -7,7 +7,7 @@
     </div>
     <b-loading v-if="isLoading" :active.sync="isLoading"></b-loading>
 
-    <div v-elseif="recipes.length <= 0"  class="columns is-multiline">
+    <div v-else-if="recipes.length <= 0"  class="columns is-multiline">
         <div class="column">
             <Divider/>
             <p>Aucune recettes trouvées :(</p>
