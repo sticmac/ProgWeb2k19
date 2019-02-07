@@ -13,6 +13,7 @@ client.connect((err) => {
     }
     db = client.db(dbName);
     db.createCollection("france");
+    db.createCollection("users");
     db.createCollection("recipes");
     db.collection('france').insertMany(data.products, (err, docs) => {
         if (!err) {

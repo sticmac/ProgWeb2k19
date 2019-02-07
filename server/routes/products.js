@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const db = require("../modules/db/mongoClient");
+const auth = require("./auth");
 
 function buildImageURL(item) {
     // src="https://static.openfoodfacts.org/images/products/000/000/003/0113/ingredients_fr.17.200.jpg"
@@ -59,7 +60,7 @@ function getParams(req, res) {
 
 
 /* GET home page. */
-router.get('/', (req, res, next) => {
+router.get('/', auth.optional, (req, res, next) => {
     const params = getParams(req, res);
     if (!!params) {
         db.findAll("france", params)
@@ -92,7 +93,7 @@ router.get('/', (req, res, next) => {
 
 });
 
-router.get('/:key_words', (req, res, next) => {
+router.get('/:key_words', auth.optional, (req, res, next) => {
     const params = getParams(req, res);
     if (!!params) {
         const keyWordArray = req.params.key_words.split("+");
@@ -121,7 +122,7 @@ router.get('/:key_words', (req, res, next) => {
 
 });
 
-router.get('/item/:id', (req, res, next) => {
+router.get('/item/:id', auth.optional, (req, res, next) => {
     db.findOneBy("france", {_id: req.params.id})
         .then(value => {
             console.log("**********");
