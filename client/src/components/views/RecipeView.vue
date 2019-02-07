@@ -32,7 +32,7 @@
             <Divider/>
         </div>
     </div>
-    <b-loading :active.sync="isLoading" :can-cancel="true"></b-loading>
+    <b-loading :active.sync="isLoading"></b-loading>
 
     <!-- Error or recipe not found -->
     <div v-if="!isLoading && !recipe">

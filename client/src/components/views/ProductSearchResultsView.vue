@@ -33,8 +33,9 @@ export default {
             
             Requester.getProductsFromArgs(searchArg, (success, products) => {
                 this.loaded = true;
-                this.results = products;
-                this.loaded = true;
+                if(success) {
+                    this.results = products;
+                }
             });
         }
     },
