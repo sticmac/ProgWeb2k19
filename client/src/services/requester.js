@@ -24,4 +24,10 @@ export default class Requester {
             requestCallback(success, data);
         });
     }
+
+    static getRecipeById(recipeId, requestCallback) {
+        Fetcher.get('/recipes/item/' + recipeId, (success, data) => {
+            requestCallback(success, data);
+        });
+    }
 }

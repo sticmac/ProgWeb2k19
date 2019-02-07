@@ -33,13 +33,15 @@ export default {
             
             Requester.getProductsFromArgs(searchArg, (success, products) => {
                 this.loaded = true;
-                this.results = products;
-                this.loaded = true;
+                if(success) {
+                    this.results = products;
+                }
             });
         }
     },
     watch:{
-        $route (to, from){
+        // eslint-disable-next-line
+        $route(to, from){
             this.search(to.params.q);
         }
     },
