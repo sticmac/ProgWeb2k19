@@ -12,7 +12,7 @@
                     <br>
                     {{comment.content}}
                     <br>
-                    <small v-if="!isResponse">
+                    <small>
                         <a>Aimer</a> · <a>Répondre</a> · 
                     </small>
                      <small>
@@ -22,25 +22,25 @@
             </div>
 
             <!-- Responses -->
-            <div v-if="responses">
+            <!-- <div v-if="responses">
                 <Comment v-for="(response, index) in responses" :key="index" :comment="response" :isResponse="true"/>
-            </div>
+            </div> -->
         </div>
     </article>
 </template>
 
 <script>
-import Comment from './Comment.vue'
+// import Comment from './Comment.vue'
 
 export default {
     name: "Comment",
-    components : {
-        Comment
-    },
+    // components : {
+    //     Comment
+    // },
     props : {
         comment : null,
-        isResponse : false,
-        responses : Array
+        // isResponse : false,
+        // responses : Array
     }
 }
 </script>

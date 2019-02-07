@@ -15,18 +15,21 @@
             </div>
         </section>
         <div  class="container">
+            <Divider/>
             <div class="columns">
                 <div class="column">
                     <h1 class="title is-size-3">Description</h1>
                     <p class="is-size-5">{{this.recipe.description}}</p>
                 </div>
                 <div class="column">
-                    <h1 class="title is-size-3">Ingédients</h1>
-                    <p class="is-size-5">{{this.recipe.description}}</p>
+                    <h1 class="title is-size-3">Ingrédients</h1>
+                    <ProductList :products="recipe.products"/>
                 </div>
             </div>
+            <Divider :marginHeight="10"/>
             <h2 class="title is-size-4">Commentaires</h2>
             <CommentSection/>
+            <Divider/>
         </div>
     </div>
     <b-loading :active.sync="isLoading" :can-cancel="true"></b-loading>
@@ -54,11 +57,15 @@
 import CommentSection from '../CommentSection.vue'
 import RecipeItemIcons from '../recipes/RecipeItemIcons.vue'
 import Requester from '../../services/requester'
+import Divider from '../Divider.vue'
+import ProductList from '../ProductList.vue'
 
 export default {
     components :{
         RecipeItemIcons,
-        CommentSection
+        CommentSection,
+        ProductList,
+        Divider
     },
     data(){
         return {
@@ -80,7 +87,24 @@ export default {
                     image : "https://foodrevolution.org/wp-content/uploads/2018/04/blog-featured-diabetes-20180406-1330.jpg",
                     description : "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean justo nibh, commodo sit amet vehicula auctor, tincidunt pretium odio.",
                     price : 5,
-                    time_required : 20
+                    time_required : 20,
+                    products : [
+                        {
+                            name : "Riz",
+                            image : "url",
+                            quantity : "150 g"
+                        },
+                        {
+                            name : "Riz",
+                            image : "url",
+                            quantity : "150 g"
+                        },
+                        {
+                            name : "Riz",
+                            image : "url",
+                            quantity : "150 g"
+                        }
+                    ]
                 };
             }
         });

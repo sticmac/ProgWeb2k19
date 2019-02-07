@@ -1,6 +1,6 @@
 <template>
 <div>
-    <Comment v-for="(comment, index) in comments" :key="index" :comment="comment" :responses="responses"/>
+    <Comment v-for="(comment, index) in comments" :key="index" :comment="comment"/>
     <!-- Add comment section -->
     <article class="media">
         <figure class="media-left">
@@ -34,13 +34,6 @@ export default {
     data(){
         return {
             comments : [
-                {
-                    author : "Antoine Dezarnaud",
-                    content : "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis porta eros lacus, nec ultricies elit blandit non. Suspendisse pellentesque mauris sit amet dolor blandit rutrum. Nunc in tempus turpis.",
-                    date : "04/02/2019"
-                }
-            ],
-            responses : [
                 {
                     author : "Antoine Dezarnaud",
                     content : "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis porta eros lacus, nec ultricies elit blandit non. Suspendisse pellentesque mauris sit amet dolor blandit rutrum. Nunc in tempus turpis.",
