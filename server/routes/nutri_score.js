@@ -13,11 +13,7 @@ router.get('/item/:id', auth.optional, (req, res, next) => {
         .then(value => {
             res.status(200);
             //TODO:: use promise
-            console.log("************");
-            console.log(value);
-            console.log("************");
             const nutriscore = nutriScore.compute(value.nutriments);
-            console.log(nutriscore);
             res.send({nutriscore: nutriscore})
         })
         .catch(reason => {

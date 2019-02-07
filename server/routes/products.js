@@ -125,10 +125,6 @@ router.get('/:key_words', auth.optional, (req, res, next) => {
 router.get('/item/:id', auth.optional, (req, res, next) => {
     db.findOneBy("france", {_id: req.params.id})
         .then(value => {
-            console.log("**********");
-            console.log(req.params.id);
-            console.log(value);
-            console.log("**********");
             res.status(200);
             res.send({
                 id: value._id,
