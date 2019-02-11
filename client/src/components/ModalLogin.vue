@@ -2,7 +2,6 @@
 <div style="overflow: hidden;">
     <div v-if="!registerDisplay">
         <p class="title has-text-white has-text-centered">Cette partie est réservée aux membres !</p>
-        <form action="">
             <div class="modal-card" style="width: auto">
                 <header class="modal-card-head">
                     <p class="modal-card-title">Se connecter</p>
@@ -35,7 +34,6 @@
                     <button class="button is-primary" @click="loginBtnClicked()">Se connecter</button>
                 </footer>
             </div>
-        </form>
         <Divider :marginHeight="1"/>
         <div class="level">
             <div class="level-item">
@@ -47,7 +45,6 @@
     </div>
     <div v-else>
         <p class="title has-text-white has-text-centered">Cette partie est réservée aux membres !</p>
-        <form action="">
             <div class="modal-card" style="width: auto">
                 <header class="modal-card-head">
                     <p class="modal-card-title">S'inscrire</p>
@@ -86,7 +83,6 @@
                     <button class="button is-info" @click="registerBtnClicked()">S'inscrire</button>
                 </footer>
             </div>
-        </form>
         <Divider :marginHeight="1"/>
         <div class="level">
             <div class="level-item">
@@ -102,7 +98,7 @@
 
 <script>
 import Divider from './Divider.vue'
-import Authentification from '../services/authentification.js'
+import router from '../services/router.js'
 
 export default {
     components : {
@@ -124,17 +120,24 @@ export default {
             this.registerDisplay = false;
         },
         registerBtnClicked(){
-            Authentification.register(this.email, this.username, this.password, (success, data) => {
-                if(success){
-                    this.$router.push(this.$route.query.redirect)
+            // eslint-disable-next-line
+            this.$authentification.register(this.email, this.username, this.password, (success, data) => {
+                if(success &&  this.$authentification.loggedIn()){
+                    router.push(router.currentRoute.query.redirect)
+                    this.$parent.close()
                 }
             });
         },
         loginBtnClicked(){
+            console.log(router);
+            // eslint-disable-next-line
             this.$authentification.login(this.email, this.password, (success, data) => {
-
+                if(success &&  this.$authentification.loggedIn()){
+                    router.push(router.currentRoute.query.redirect)
+                    this.$parent.close()
+                }
             });
-        }
+        },
     }
 }
 </script>

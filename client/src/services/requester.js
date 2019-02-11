@@ -34,12 +34,11 @@ export default class Requester {
     static postRegister(email, username, password, requestCallback) {
         const body = {
             email: email,
-            username : username,
+            name : username,
             password : password
         }
         Fetcher.post('/account/', body, (success, data) => {
             requestCallback(success, data);
-            console.log(data);
         });
     }
 
@@ -50,7 +49,6 @@ export default class Requester {
         }
         Fetcher.post('/token/', body, (success, data) => {
             requestCallback(success, data);
-            console.log(data);
         });
     }
 }
