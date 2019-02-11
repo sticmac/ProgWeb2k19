@@ -28,19 +28,16 @@ function buildImageURL(item) {
         }
         let image = null, key = null;
         if (!!item.images.front_fr) {
-            console.log("front");
             key = "front_fr";
             image = item.images.front_fr;
         } else {
-            console.log("not front");
-            console.log(Object.keys(item.images));
             key = Object.keys(item.images).find(value => RegExp("front").test(value));
             image = item.images[key];
         }
-        console.log("KEY", key);
-        console.log("IMAGE: ", image);
+        if (!image) {
+            return null;
+        }
         str += key + "." + image.rev + ".full.jpg";
-        console.log(str);
         return str
     } else {
         return null;
