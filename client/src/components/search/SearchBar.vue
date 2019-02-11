@@ -1,58 +1,94 @@
 <template>
-    <div>
-        <b-field grouped>
-            <b-input
-                placeholder="Rechercher un produit ..."
-                size="is-large"
-                icon="search"
-                v-model="searchArg"
-                @keyup.enter.native="$emit('search', searchArg)"
-                expanded
-            ></b-input>
-            <p class="control">
-                <a class="button is-link is-large" v-on:click="$emit('search', searchArg)" :disabled="searchArg.length === 0">
-                <span>Rechercher</span>
-                </a>
-            </p>
-        </b-field>
+  <div>
+    <b-field grouped>
+      <b-input
+        placeholder="Rechercher un produit ..."
+        size="is-large"
+        icon="search"
+        v-model="searchArg"
+        @keyup.enter.native="search()"
+        expanded
+      ></b-input>
+      <p class="control">
+        <a class="button is-link is-large" v-on:click="search()" :disabled="searchArg.length === 0">
+          <span>Rechercher</span>
+        </a>
+      </p>
+    </b-field>
 
-        <b-collapse class="card" :open="false">
-        <div slot="trigger" slot-scope="props" class="card-header">
-            <p class="card-header-title">Ajouter des préférences</p>
-            <a class="card-header-icon">
-            <b-icon :icon="props.open ? 'angle-down' : 'angle-up'"></b-icon>
-            </a>
-        </div>
-        <div class="card-content">
-            <div class="content">
-            <div class="columns">
-                <div class="column">
-                <div class="field">
-                    <b-checkbox>Basic</b-checkbox>
-                </div>
-                <div class="field">
-                    <b-checkbox>Basic</b-checkbox>
-                </div>
-                <div class="field">
-                    <b-checkbox>Basic</b-checkbox>
-                </div>
-                </div>
-                <div class="column">
-                <div class="field">
-                    <b-switch>Default</b-switch>
-                </div>
-                <div class="field">
-                    <b-switch>Default</b-switch>
-                </div>
-                <div class="field">
-                    <b-switch>Default</b-switch>
-                </div>
-                </div>
+    <b-collapse class="card" :open="false">
+      <div slot="trigger" slot-scope="props" class="card-header">
+        <p class="card-header-title">Ajouter des préférences</p>
+        <a class="card-header-icon">
+          <b-icon :icon="props.open ? 'angle-down' : 'angle-up'"></b-icon>
+        </a>
+      </div>
+      <div class="card-content">
+        <div class="content">
+          <div class="columns">
+            <div class="column">
+              <b-field label="Ajouter un allergène">
+                <b-input
+                  placeholder="Allergène..."
+                  rounded
+                  @keyup.enter.native="onAllergenAdded()"
+                  v-model="allergenInput"
+                ></b-input>
+              </b-field>
+              <div id="allergens">
+                <span
+                  v-for="(allergen, index) in allergens"
+                  v-bind:key="index"
+                  class="tag is-info is-medium"
+                >
+                  {{allergen}}
+                  <button
+                    class="delete is-small"
+                    v-on:click="allergens.splice(index, 1)"
+                  ></button>
+                </span>
+              </div>
             </div>
+            <div class="column">
+              <div class="field">
+                <b-switch>Default</b-switch>
+              </div>
+              <div class="field">
+                <b-switch>Default</b-switch>
+              </div>
+              <div class="field">
+                <b-switch>Default</b-switch>
+              </div>
             </div>
+          </div>
+          <b-field label="Prix minimum">
+            <div>
+              <input
+                class="slider is-fullwidth has-output is-primary"
+                step="1"
+                min="0"
+                max="50"
+                type="range"
+                v-model="priceFilter">
+              <output>{{priceFilter}}€</output>
+            </div>
+          </b-field>
+          <b-field label="Score minimum">
+            <div>
+              <input
+                class="slider is-fullwidth has-output is-primary"
+                step="1"
+                min="0"
+                max="10"
+                type="range"
+                v-model="scoreFilter">
+              <output>{{scoreFilter}}</output>
+            </div>
+          </b-field>
         </div>
-        </b-collapse>
-    </div>
+      </div>
+    </b-collapse>
+  </div>
 </template>
 
 <script>
@@ -61,12 +97,71 @@ export default {
   data: function() {
     return {
       searchArg: this.baseArg ? this.baseArg : "",
+      queryParams: {},
+      allergens: [],
+      priceFilter: 0,
+      scoreFilter: 0,
+      allergenInput: ""
     };
   },
-  methods: {
-      setValue: function(value) {
-          this.searchArg = value;
+  mounted() {
+    if (this.$route.query.allergens) {
+      this.$route.query.allergens.split("+").forEach(allergen => {
+        this.allergens.push(allergen);
+      });
+    }
+    this.scoreFilter = this.$route.query.score ? +this.$route.query.score : 0;
+    this.priceFilter = this.$route.query.price ? +this.$route.query.price : 0;
+  },
+  watch: {
+    allergens() {
+      if (this.allergens.length == 0) {
+        this.removeQueryParam("allergens");
+      } else {
+        this.queryParams = {};
+        let str = "";
+        for (const allergen of this.allergens) {
+          str += (str === "" ? "" : "+") + allergen;
+        }
+        this.addQueryParam("allergens", str);
       }
+    }
+  },
+  methods: {
+    addQueryParam: function(key, value) {
+      // console.log("Added query " + key + "=" + value);
+      this.queryParams[key] = value;
+    },
+    removeQueryParam: function(key) {
+      delete this.queryParams[key];
+    },
+    formatQueryParams: function() {
+      let str = "";
+      for (const key in this.queryParams) {
+        str += (str === "" ? "" : "&") + key + "=" + this.queryParams[key];
+      }
+      return str === "" ? "" : "?" + str;
+    },
+    search: function() {
+      this.addQueryParam("price", this.priceFilter);
+      this.addQueryParam("score", this.scoreFilter);
+      this.$emit("search", {
+        searchArg: this.searchArg,
+        queryParams: this.queryParams
+      });
+    },
+    onAllergenAdded() {
+      if (this.allergenInput) {
+        this.allergens.push(this.allergenInput);
+        this.allergenInput = "";
+      }
+    }
   }
-}
+};
 </script>
+
+<style lang="scss">
+#allergens > * {
+  margin-right: 3px;
+}
+</style>

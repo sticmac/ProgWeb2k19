@@ -27,9 +27,10 @@ export default {
     SearchBar
   },
   methods: {
-    search: function(searchArg) {
-      const query = searchArg.split(' ').join('+');
-      this.$router.push({name: 'results', params: {q: query}});
+    search: function(searchObject) {
+      const query = searchObject.searchArg.split(' ').join('+');
+      
+      this.$router.push({name: 'results', params: {q: query}, query: searchObject.queryParams});
       this.searchClass = "top";
     }
   }

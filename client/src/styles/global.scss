@@ -40,6 +40,7 @@ $fa-font-path: './styles/webfonts'; //indicates where font folder is
 @import './../../node_modules/@fortawesome/fontawesome-free/scss/regular.scss';
 @import './../../node_modules/@fortawesome/fontawesome-free/scss/solid.scss';
 @import './../../node_modules/@fortawesome/fontawesome-free/scss/fontawesome.scss';
+@import './../../node_modules/bulma-slider/dist/css/bulma-slider.sass';
 
 html,
 body {
