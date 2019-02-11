@@ -1,20 +1,20 @@
 <template>
-  <div>
-    <b-field grouped>
-      <b-input
-        placeholder="Rechercher un produit ..."
-        size="is-large"
-        icon="search"
-        v-model="searchArg"
-        @keyup.enter.native="search()"
-        expanded
-      ></b-input>
-      <p class="control">
-        <a class="button is-link is-large" v-on:click="search()" :disabled="searchArg.length === 0">
-          <span>Rechercher</span>
-        </a>
-      </p>
-    </b-field>
+    <div>
+        <b-field grouped>
+            <b-input
+                placeholder="Rechercher un produit ..."
+                size="is-large"
+                icon="search"
+                v-model="searchArg"
+                @keyup.enter.native="launchSearch()"
+                expanded
+            ></b-input>
+            <p class="control">
+                <a class="button is-link is-large" v-on:click="launchSearch()" :disabled="!this.canLaunchSearch">
+                <span>Rechercher</span>
+                </a>
+            </p>
+        </b-field>
 
     <b-collapse class="card" :open="false">
       <div slot="trigger" slot-scope="props" class="card-header">
@@ -101,7 +101,8 @@ export default {
       allergens: [],
       priceFilter: 0,
       scoreFilter: 0,
-      allergenInput: ""
+      allergenInput: "",
+      canLaunchSearch: false
     };
   },
   mounted() {
@@ -125,6 +126,9 @@ export default {
         }
         this.addQueryParam("allergens", str);
       }
+    },
+    searchArg(){
+      this.canLaunchSearch = this.searchArg.trim()!=""
     }
   },
   methods: {
@@ -142,21 +146,27 @@ export default {
       }
       return str === "" ? "" : "?" + str;
     },
-    search: function() {
+      setValue: function(value) {
+          this.searchArg = value;
+      },
+      launchSearch(){
+          if(this.searchArg!="") {
+
       this.addQueryParam("price", this.priceFilter);
       this.addQueryParam("score", this.scoreFilter);
       this.$emit("search", {
         searchArg: this.searchArg,
         queryParams: this.queryParams
       });
-    },
+          }
+      },
     onAllergenAdded() {
       if (this.allergenInput) {
         this.allergens.push(this.allergenInput);
         this.allergenInput = "";
       }
     }
-  }
+  },
 };
 </script>
 

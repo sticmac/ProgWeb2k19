@@ -29,6 +29,29 @@ export default {
     this.search(this.q + (str === "" ? "" : "?" + str));
   },
   methods: {
+        search: function(searchArg) {
+            this.loaded = false;
+            this.results = [];
+            
+            Requester.getProductsFromArgs(searchArg, (success, products) => {
+                this.loaded = true;
+                if(success) {
+                    this.results = products;
+                }
+            });
+        }
+    },
+    watch:{
+        // eslint-disable-next-line
+        $route(to, from){
+            this.search(to.params.q);
+        }
+    },
+    components: {
+        SearchResult,
+        Loading
+    },
+  methods: {
     search: function(searchArg) {
       this.loaded = false;
       this.results = [];

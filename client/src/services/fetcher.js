@@ -2,24 +2,27 @@ const serverUrl = process.env.VUE_APP_SERVER_URL || "http://localhost:3000";
 
 export default class Fetcher {
 
-    static buildRequest(method, relativeURL){
+    static buildRequest(method, body, relativeURL){
         const myHeaders = new Headers();
 
-        const contract = { method: method,
-                    headers: myHeaders,
-                    mode: 'cors',
-                    cache: 'default' };
+        const contract = { 
+            method: method,
+            headers: myHeaders,
+            mode: 'cors',
+            cache: 'default',
+            body : body
+        };
 
         return new Request(serverUrl + relativeURL, contract);
     }
 
     static get(relativeURL, fetchCallback){
-        const request = this.buildRequest('GET', relativeURL);
+        const request = this.buildRequest('GET', null, relativeURL);
         this.fetchRequest(request, fetchCallback);
     }
 
-    static post(relativeURL, fetchCallback){
-        const request = this.buildRequest('POST', relativeURL);
+    static post(relativeURL, body, fetchCallback){
+        const request = this.buildRequest('POST', body, relativeURL);
         this.fetchRequest(request, fetchCallback);
     }
 
@@ -29,7 +32,7 @@ export default class Fetcher {
             (response) => {
                 if (response.status != 200) {
                     // eslint-disable-next-line
-                    console.error('Looks like there was a problem. Status Code: ' + response.status);
+                    console.warn('Looks like there was a problem. Status Code: ' + response.status);
                     fetchCallback(false, null);
                 }
 
@@ -38,14 +41,14 @@ export default class Fetcher {
 
                 }).catch(function(err) {
                     // eslint-disable-next-line
-                    console.error(err);
+                    console.warn(err);
                     fetchCallback(false, null);
                 });
             }
         )
         .catch(function(err) {
             // eslint-disable-next-line
-            console.error('Fetch Error :-S', err);
+            console.warn('Fetch Error :-S', err);
             fetchCallback(false, null);
         });
     }

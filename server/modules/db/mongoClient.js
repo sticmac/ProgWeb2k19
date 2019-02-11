@@ -47,6 +47,28 @@ function insertMany(collection, documents) {
 }
 
 module.exports = {
+    delete: (collection, id) => {
+        return new Promise((resolve, reject) =>
+            db.collection(collection)
+                .deleteOne({_id: id},
+                    (err, res) => {
+                        if (!!err) {
+                            reject(err);
+                        }
+                        resolve(res);
+                    })
+        )
+    },
+    updateOne: (collection, id, newValue) => {
+        return new Promise((resolve, reject) =>
+            db.collection(collection).update(id, {$set: newValue},
+                (err, res) => {
+                    if (!!err) {
+                        reject(err);
+                    }
+                    resolve(res);
+                }));
+    },
     clean: () => {
         listCollections()
             .then(collections => {
@@ -62,6 +84,7 @@ module.exports = {
             .then(collections => {
                 if (collections.length === 0) {
                     db.createCollection("france");
+                    db.createCollection("user");
                     db.createCollection("recipes");
                 }
                 insertMany("france", data.products);
@@ -69,7 +92,6 @@ module.exports = {
 
     },
     insertOne: (collection, document) => {
-        console.log(document);
         return new Promise((resolve, reject) => {
             db.collection(collection)
                 .insertOne(document, (err, result) => {
@@ -82,10 +104,10 @@ module.exports = {
         })
     },
     insertMany: (collection, documents) => {
-        insertMany(collection, documents);
+        return insertMany(collection, documents);
     },
     listCollections: () => {
-        listCollections();
+        return listCollections();
     },
     findOneBy: (collection, criteria) => {
         return new Promise((resolve, reject) => {
@@ -93,7 +115,7 @@ module.exports = {
                 if (mongoError) {
                     reject(mongoError);
                 }
-                if (!objects){
+                if (!objects) {
                     reject({error: "Not Found."})
                 }
                 resolve(objects);
@@ -128,7 +150,7 @@ module.exports = {
     },
     findAll: (collection, params) => {
         return new Promise((resolve, reject) => {
-            (!!params.pageLength && !!params.pageNumber ?
+            (params && !!params.pageLength && !!params.pageNumber ?
                     db.collection(collection).find({}).skip(params.pageLength * (params.pageNumber - 1)).limit(params.pageLength) :
                     db.collection(collection).find({})
             ).toArray((mongoError, objects) => {

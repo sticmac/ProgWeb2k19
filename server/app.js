@@ -8,7 +8,13 @@ const indexRouter = require('./routes/index');
 const nutri_score = require('./routes/nutri_score');
 const products = require('./routes/products');
 const recipes = require("./routes/recipes");
+const comments = require("./routes/comments");
+const token = require("./routes/token");
+const account = require("./routes/account");
+const auth = require("./routes/auth");
 const app = express();
+const passport = require("passport");
+require("./config/passport");
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -19,15 +25,20 @@ app.use((req, res, next) => {
     next();
 });
 
+app.use(passport.initialize());
+app.use(passport.session());
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({extended: false}));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/nutriscore', nutri_score);
-app.use('/products', products);
-app.use('/recipes', recipes);
+app.use('/nutriscore', auth.optional, nutri_score);
+app.use('/products', auth.optional, products);
+app.use('/recipes', auth.optional, recipes);
+app.use('/recipes', auth.optional, comments);
+app.use('/token', auth.optional, token);
+app.use('/account', auth.optional, account);
 // *****************************
 // IMPORTANT:
 // This route needs to be the last route declared !!!
@@ -60,7 +71,6 @@ app.use(function (err, req, res, next) {
     res.status(err.status || 500);
     res.send(err.toString());
 });
-
 
 module.exports = app;
 

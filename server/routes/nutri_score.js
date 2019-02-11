@@ -2,9 +2,10 @@ const express = require('express');
 const router = express.Router();
 const db = require("../modules/db/mongoClient");
 const nutriScore = require("../modules/nutriScore");
+const auth = require("./auth");
 
 /* GET home page. */
-router.get('/item/:id', (req, res, next) => {
+router.get('/item/:id', auth.optional, (req, res, next) => {
 
     db.findOneBy("france", {
         _id: req.params.id
@@ -12,11 +13,7 @@ router.get('/item/:id', (req, res, next) => {
         .then(value => {
             res.status(200);
             //TODO:: use promise
-            console.log("************");
-            console.log(value);
-            console.log("************");
             const nutriscore = nutriScore.compute(value.nutriments);
-            console.log(nutriscore);
             res.send({nutriscore: nutriscore})
         })
         .catch(reason => {
