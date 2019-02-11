@@ -30,7 +30,7 @@
               </div>
              </div>
              <div class="column">
-               <Prices />
+               <Prices v-bind:productId="productId"/>
              </div>
           </div>
           <h2 class="title">Ingrédients :</h2>
