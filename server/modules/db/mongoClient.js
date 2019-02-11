@@ -2,7 +2,8 @@ const MongoClient = require('mongodb').MongoClient;
 const assert = require('assert');
 // Connection URL
 // const url = 'mongodb://localhost/off';
-const url = "mongodb://root:toor123@ds159624.mlab.com:59624/mongo-vietnam";
+// "mongodb://root:toor123@ds159624.mlab.com:59624/mongo-vietnam"
+const url = process.env.MONGO_URL || "mongodb://localhost/mongo-vietnam";
 
 // Database Name
 const dbName = 'mongo-vietnam';
@@ -15,30 +16,82 @@ client.connect((err) => {
     if (err) {
         console.error(err);
     }
-    db = client.db(dbName)
+    db = client.db(dbName);
 });
 //TODO:: use on connection by function to ensure the connection is reset each time.
 //That would allow to not have to reboot server when connection is down for a few sec
 
+function listCollections() {
+    return new Promise((resolve, reject) => {
+        db.listCollections().toArray(function (err, collInfos) {
+            if (err) {
+                reject(err);
+            }
+            resolve(collInfos);
+        });
+
+    })
+}
+
+function insertMany(collection, documents) {
+    return new Promise((resolve, reject) => {
+        db.collection(collection)
+            .insertMany(documents, (err, result) => {
+                if (err) {
+                    reject(err);
+                }
+                resolve(result);
+            });
+
+    })
+}
+
 module.exports = {
-    updateOne: (collection, id, values) => {
-        console.log(values);
-        return new Promise((resolve, reject) => {
+    delete: (collection, id) => {
+        return new Promise((resolve, reject) =>
             db.collection(collection)
-                .updateOne({_id: id}
-                    , {$set: values}
-                    , (err, result) => {
-                        console.log("Err: " + err);
-                        console.log("Res: " + result);
-                        if (err) {
+                .deleteOne({_id: id},
+                    (err, res) => {
+                        if (!!err) {
                             reject(err);
                         }
-                        resolve(result);
+                        resolve(res);
                     })
-        })
+        )
+    },
+    updateOne: (collection, id, newValue) => {
+        return new Promise((resolve, reject) =>
+            db.collection(collection).update(id, {$set: newValue},
+                (err, res) => {
+                    if (!!err) {
+                        reject(err);
+                    }
+                    resolve(res);
+                }));
+    },
+    clean: () => {
+        listCollections()
+            .then(collections => {
+                    collections.forEach(collection => {
+                        db.collection(collection.name)
+                            .deleteMany({});
+                    })
+                }
+            );
+    },
+    init: (data) => {
+        listCollections()
+            .then(collections => {
+                if (collections.length === 0) {
+                    db.createCollection("france");
+                    db.createCollection("user");
+                    db.createCollection("recipes");
+                }
+                insertMany("france", data.products);
+            });
+
     },
     insertOne: (collection, document) => {
-        console.log(document);
         return new Promise((resolve, reject) => {
             db.collection(collection)
                 .insertOne(document, (err, result) => {
@@ -51,33 +104,19 @@ module.exports = {
         })
     },
     insertMany: (collection, documents) => {
-        return new Promise((resolve, reject) => {
-            db.collection(collection)
-                .insertMany(documents, (err, result) => {
-                    if (err) {
-                        reject(err);
-                    }
-                    resolve(result);
-                });
-
-        })
+        return insertMany(collection, documents);
     },
-    listCollection: () => {
-        return new Promise((resolve, reject) => {
-            db.listCollections().toArray(function (err, collInfos) {
-                if (err) {
-                    reject(err);
-                }
-                resolve(collInfos);
-            });
-
-        })
+    listCollections: () => {
+        return listCollections();
     },
     findOneBy: (collection, criteria) => {
         return new Promise((resolve, reject) => {
             db.collection(collection).findOne(criteria, (mongoError, objects) => {
                 if (mongoError) {
                     reject(mongoError);
+                }
+                if (!objects) {
+                    reject({error: "Not Found."})
                 }
                 resolve(objects);
             })
@@ -95,7 +134,7 @@ module.exports = {
     },
     findByRegex: (collection, object_key, regex, params) => {
         const criteria = {};
-        criteria[object_key] = {$regex: regex};
+        criteria[object_key] = {$regex: regex, $options: "i"};
         // console.log(criteria);
         return new Promise((resolve, reject) => {
             (!!params.pageLength && !!params.pageNumber ?
@@ -111,7 +150,7 @@ module.exports = {
     },
     findAll: (collection, params) => {
         return new Promise((resolve, reject) => {
-            (!!params.pageLength && !!params.pageNumber ?
+            (params && !!params.pageLength && !!params.pageNumber ?
                     db.collection(collection).find({}).skip(params.pageLength * (params.pageNumber - 1)).limit(params.pageLength) :
                     db.collection(collection).find({})
             ).toArray((mongoError, objects) => {

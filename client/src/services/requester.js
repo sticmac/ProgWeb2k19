@@ -13,9 +13,44 @@ export default class Requester {
         });
     }
 
+    static getProductById(productId, requestCallback) {
+        Fetcher.get('/products/item/' + productId, (success, data) => {
+            requestCallback(success, data);
+        });
+    }
+
     static getRecipes(requestCallback){
         Fetcher.get('/recipes/', (success, data) => {
             requestCallback(success, data);
+        });
+    }
+
+    static getRecipeById(recipeId, requestCallback) {
+        Fetcher.get('/recipes/item/' + recipeId, (success, data) => {
+            requestCallback(success, data);
+        });
+    }
+
+    static postRegister(email, username, password, requestCallback) {
+        const body = {
+            email: email,
+            username : username,
+            password : password
+        }
+        Fetcher.post('/account/', body, (success, data) => {
+            requestCallback(success, data);
+            console.log(data);
+        });
+    }
+
+    static postLogin(email, password, requestCallback) {
+        const body = {
+            email: email,
+            password : password
+        }
+        Fetcher.post('/token/', body, (success, data) => {
+            requestCallback(success, data);
+            console.log(data);
         });
     }
 }

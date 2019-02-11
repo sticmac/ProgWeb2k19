@@ -1,5 +1,5 @@
 <template>
-  <div v-if="this.productId" class="section">
+  <div v-if="productExists" class="section">
     <div class="container">
       <h1 class="title is-1">{{this.capitalizeFirstLetter(this.product.name)}}</h1>
       <div class="columns">
@@ -23,13 +23,19 @@
           <div class="info-tag categories">
             <b-taglist>
               <b-tag type="is-dark">Catégories</b-tag>
-              <b-tag type="is-info">TODO</b-tag>
+              <b-tag v-for="(category, index) in categories" v-bind:key="index" type="is-info">{{category}}</b-tag>
             </b-taglist>
           </div>
           <h2 class="title">Ingrédients :</h2>
           <p id="ingredients"></p>
           <h2 class="title">Informations nutritives :</h2>
-          <b-table id="nutrition-table" :data="data" :columns="columns"></b-table>
+          <b-table
+            v-if="nutritionDataAvailable"
+            id="nutrition-table"
+            :data="data"
+            :columns="columns"
+          ></b-table>
+          <p v-if="!nutritionDataAvailable">Les informations nutritives ne sont pas</p>
           <h2 class="title">Utilisé dans les recettes :</h2>
           <p>Remplir de cards</p>
         </div>
@@ -49,13 +55,17 @@
 </template>
 
 <script>
+import Requester from "../../services/requester";
 export default {
   name: "ProductView",
   props: ["productId"],
   data() {
     return {
       product: {},
+      productExists: true,
+      nutritionDataAvailable: true,
       data: [],
+      categories: [],
       columns: [
         {
           field: "nutrition_attribute_name",
@@ -73,25 +83,33 @@ export default {
     };
   },
   mounted() {
-    fetch("http://localhost:3000/products/item/" + this.productId)
-      .then(response => {
-        return response.json();
-      })
-      .then(data => {
+    Requester.getProductById(this.productId, (success, data) => {
+      if (success) {
         this.product = data;
-        this.product.serving_size
-          ? (this.columns.find(field => field.field === "per_serving").label +=
-              "(" + this.product.serving_size + ")")
-          : "";
+        if (this.product.serving_size) {
+          this.columns.find(field => field.field === "per_serving").label +=
+            "(" + this.product.serving_size + ")";
+        } else {
+          this.columns.splice(2, 1);
+        }
         if (this.product.nutriments) {
           this.parseNutriments(this.product.nutriments);
+        } else {
+          this.nutritionDataAvailable = false;
+        }
+        if (this.product.categories_hierarchy) {
+          this.categories = this.parseCategories(
+            this.product.categories_hierarchy
+          );
         }
         document.getElementById("ingredients").innerHTML = this.product
           .ingredients
           ? this.product.ingredients
           : "No ingredients specified.";
-      })
-      .catch(error => console.error(error));
+      } else {
+        this.productExists = false;
+      }
+    });
   },
   methods: {
     capitalizeFirstLetter(str) {
@@ -130,6 +148,8 @@ export default {
               : parseFloat(value).toFixed(2);
             break;
           case "serving":
+            if (!this.columns.find(field => field.field === "per_serving"))
+              break;
             element.per_serving = element.per_serving
               ? parseFloat(value).toFixed(2) + " " + element.per_serving
               : parseFloat(value).toFixed(2);
@@ -138,6 +158,8 @@ export default {
             element.for_100 = element.for_100
               ? element.for_100 + " " + value
               : value;
+            if (!this.columns.find(field => field.field === "per_serving"))
+              break;
             element.per_serving = element.per_serving
               ? element.per_serving + " " + value
               : value;
@@ -152,6 +174,13 @@ export default {
           return 1;
         }
         return 0;
+      });
+    },
+    parseCategories(categories) {
+      return categories.map(category => {
+        const v = category.split(":")[1];
+        v.replace(/-/g, " ");
+        return this.capitalizeFirstLetter(v);
       });
     }
   }

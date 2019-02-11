@@ -1,6 +1,5 @@
 <template>
     <div class="container">
-        <SearchBar ref="bar" v-on:search="routeChange($event)" style="margin-bottom: 2em"/>
         <div v-if="loaded && results.length === 0">
             Aucun résultat n'a été trouvé... :-(
         </div>
@@ -14,7 +13,6 @@
 <script>
 import SearchResult from "../search/SearchResult";
 import Loading from "../Loading";
-import SearchBar from "../search/SearchBar";
 import Requester from '../../services/requester'
 
 export default {
@@ -26,33 +24,30 @@ export default {
         }
     },
     mounted() {
-        this.$refs.bar.setValue(this.q.split('+').join(' '));
         this.search(this.q);
     },
     methods: {
-        routeChange: function(searchArg) {
-            const query = searchArg.split(' ').join('+');
-            this.$router.push({name: 'results', params: {q: query}});
-        },
         search: function(searchArg) {
             this.loaded = false;
             this.results = [];
             
             Requester.getProductsFromArgs(searchArg, (success, products) => {
-                this.results = products;
                 this.loaded = true;
+                if(success) {
+                    this.results = products;
+                }
             });
         }
     },
     watch:{
-        $route (to, from){
+        // eslint-disable-next-line
+        $route(to, from){
             this.search(to.params.q);
         }
-    }, 
+    },
     components: {
         SearchResult,
-        Loading,
-        SearchBar
+        Loading
     }
 }
 </script>

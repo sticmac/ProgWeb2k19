@@ -5,28 +5,25 @@
             <b-icon
             pack="fas"
             icon="dollar-sign"
-            size="is-small"
             :type="'is-'+this.priceClass">
             </b-icon>
-            <p class="icon-value" :class="'has-text-'+this.priceClass">{{this.recipe.price}}</p>
+            <p :style="iconValueMargin" class="icon-value" :class="'has-text-'+this.priceClass">{{this.recipe.price}}</p>
         </div>
         <div class="level-item">
             <b-icon
             pack="fas"
             icon="clock"
-            size="is-small"
             :type="'is-'+timeClass">
             </b-icon>
-            <p class="icon-value has-text-info" :class="'has-text-'+timeClass">{{this.recipe.time_required}} min</p>
+            <p :style="iconValueMargin" class="has-text-info" :class="'has-text-'+timeClass">{{this.recipe.time_required}} min</p>
         </div>
         <div class="level-item">
             <b-icon
             pack="fas"
             icon="heartbeat"
-            size="is-small"
             :type="'is-'+healthClass">
             </b-icon>
-            <p class="icon-value has-text-success" :class="'has-text-'+healthClass">{{healthName}}</p>
+            <p :style="iconValueMargin" class="icon-value has-text-success" :class="'has-text-'+healthClass">{{healthName}}</p>
         </div>
     </div>
 </div>
@@ -36,9 +33,20 @@
 <script>
 export default {
     props : {
-        recipe : null
+        recipe : null,
+        size : String
     },
     computed : {
+        iconValueMargin(){
+            if(this.size === "big"){
+                return {
+                    margin: "0 2.5rem 0 1.6rem !important"
+                };
+            }
+            return {
+                margin: "0 0.4rem 0 0.3rem !important"
+            };
+        },
         priceClass(){
             var colorClass = "success";
             if(this.recipe.price > 10 && this.recipe.price <= 20){
@@ -78,13 +86,3 @@ export default {
     }
 }
 </script>
-
-<style scoped>
-    .icon-value {
-        margin-left: 0.5rem !important;
-    }
-
-    .level-item {
-        margin-right: 1.5rem !important;
-    }
-</style>
