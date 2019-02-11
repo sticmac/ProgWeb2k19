@@ -1,8 +1,13 @@
 <template>
-  <div class="container">
-    <div v-if="loaded && results.length === 0">Aucun résultat n'a été trouvé... :-(</div>
-    <div v-else-if="loaded">
-      <SearchResult v-for="(result, index) in results" v-bind:key="index" v-bind:meal="result"/>
+    <div class="container">
+        <div class="button is-link is-large compare-button" v-on:click="compare()">Comparer</div>
+        <div v-if="loaded && results.length === 0">
+            Aucun résultat n'a été trouvé... :-(
+        </div>
+        <div v-else-if="loaded">
+            <SearchResult v-for="(result, index) in results" v-bind:key="index" v-bind:meal="result"/>
+        </div>
+        <Loading v-else/>
     </div>
     <Loading v-else/>
   </div>
@@ -32,13 +37,26 @@ export default {
         search: function(searchArg) {
             this.loaded = false;
             this.results = [];
-            
+
             Requester.getProductsFromArgs(searchArg, (success, products) => {
                 this.loaded = true;
                 if(success) {
                     this.results = products;
                 }
             });
+        },
+        compare: function() {
+            const compArray = this.results.filter(value => !!value.compare);
+            if (compArray.length !== 2) {
+                this.$toast.open({
+                    duration: 5000,
+                    message: `Vous pouvez comparer les produits que 2 par 2.`,
+                    type: 'is-danger'
+                })
+            }
+            else {
+                this.$router.push('/compare/item/' + compArray[0].id + "/item/" + compArray[1].id);
+            }
         }
     },
     watch:{
@@ -80,7 +98,12 @@ export default {
 </script>
 
 <style scoped>
-.container {
-  margin-top: 2rem;
-}
+
+    .compare-button{
+        margin-bottom: 1rem;
+    }
+
+ .container{
+     margin-top: 2rem;
+ }
 </style>
