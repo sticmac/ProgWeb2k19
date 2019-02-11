@@ -2,24 +2,27 @@ const serverUrl = process.env.VUE_APP_SERVER_URL || "http://localhost:3000";
 
 export default class Fetcher {
 
-    static buildRequest(method, relativeURL){
+    static buildRequest(method, body, relativeURL){
         const myHeaders = new Headers();
 
-        const contract = { method: method,
-                    headers: myHeaders,
-                    mode: 'cors',
-                    cache: 'default' };
+        const contract = { 
+            method: method,
+            headers: myHeaders,
+            mode: 'cors',
+            cache: 'default',
+            body : body
+        };
 
         return new Request(serverUrl + relativeURL, contract);
     }
 
     static get(relativeURL, fetchCallback){
-        const request = this.buildRequest('GET', relativeURL);
+        const request = this.buildRequest('GET', null, relativeURL);
         this.fetchRequest(request, fetchCallback);
     }
 
-    static post(relativeURL, fetchCallback){
-        const request = this.buildRequest('POST', relativeURL);
+    static post(relativeURL, body, fetchCallback){
+        const request = this.buildRequest('POST', body, relativeURL);
         this.fetchRequest(request, fetchCallback);
     }
 

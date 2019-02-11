@@ -17,10 +17,10 @@
           <div class="info-tag brand">
             <b-taglist attached>
               <b-tag type="is-dark">Brand</b-tag>
-              <b-tag type="is-info">{{this.product.brands}}</b-tag>
+              <b-tag type="is-info">{{this.product.brands ? this.product.brands : "Non spécifié"}}</b-tag>
             </b-taglist>
           </div>
-          <div class="info-tag categories">
+          <div v-if="categories.length > 0" class="info-tag categories">
             <b-taglist>
               <b-tag type="is-dark">Catégories</b-tag>
               <b-tag v-for="(category, index) in categories" v-bind:key="index" type="is-info">{{category}}</b-tag>
@@ -35,7 +35,7 @@
             :data="data"
             :columns="columns"
           ></b-table>
-          <p v-if="!nutritionDataAvailable">Les informations nutritives ne sont pas</p>
+          <p v-if="!nutritionDataAvailable">Les informations nutritives ne sont pas définies.</p>
           <h2 class="title">Utilisé dans les recettes :</h2>
           <p>Remplir de cards</p>
         </div>
@@ -92,7 +92,7 @@ export default {
         } else {
           this.columns.splice(2, 1);
         }
-        if (this.product.nutriments) {
+        if (this.product.nutriments && Object.keys(this.product.nutriments).length > 1) {
           this.parseNutriments(this.product.nutriments);
         } else {
           this.nutritionDataAvailable = false;

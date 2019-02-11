@@ -71,6 +71,14 @@ function getParams(req, res) {
     return params;
 }
 
+function filterValues(values, allergens) {
+    var result = values;
+    if (allergens) {
+        result = result.filter(v => !(new RegExp(allergens.split("+").join("|"), 'i').test(JSON.stringify(v))));
+    }
+    return result;
+}
+
 
 /* GET home page. */
 router.get('/', auth.optional, (req, res, next) => {
@@ -108,14 +116,16 @@ router.get('/', auth.optional, (req, res, next) => {
 
 router.get('/:key_words', auth.optional, (req, res, next) => {
     const params = getParams(req, res);
+    console.log(req.query);
     if (!!params) {
         const keyWordArray = req.params.key_words.split("+");
         console.log(".*(" + keyWordArray.join("|") + ")+.*");
         const regex = keyWordArray.length > 1 ? ".*(" + keyWordArray.join("|") + ")+.*" : ".*" + keyWordArray[0] + ".*";
         db.findByRegex("france", "product_name", regex, params)
             .then((values) => {
+                
                 res.status(200);
-                res.send(values.map(v => {
+                res.send(filterValues(values, req.query.allergens).map(v => {
                     return {
                         id: v._id,
                         name: v.product_name || "unknown",
