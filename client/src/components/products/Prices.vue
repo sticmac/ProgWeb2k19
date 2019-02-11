@@ -70,7 +70,7 @@ export default {
         }
     },
     mounted() {
-        this.data = Requester.getPricesForProduct(this.id, (success, prices) => {
+        this.data = Requester.getPricesForProduct(this.productId, (success, prices) => {
             this.loaded = true;
             if(success) {
                 this.data = prices;
