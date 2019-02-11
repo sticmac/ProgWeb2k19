@@ -41,7 +41,6 @@
                         }))
                 ])
                     .then(values => {
-                        console.log(values);
                         this.columns = [
                             {
                                 field: "title",
@@ -75,16 +74,16 @@
                             },
                             {
                                 title: "Ingrédients",
-                                product1: !!values[0].ingredients ? values[0].ingredients.join("\n") : "-",
-                                product2: !!values[1].ingredients ? values[1].ingredients.join("\n") : "-"
+                                product1: values[0].ingredients ? values[0].ingredients.join("\n") : "-",
+                                product2: values[1].ingredients ? values[1].ingredients.join("\n") : "-"
                             },
                             {
                                 title: "Nutriments",
-                                product1: !!values[0].nutriments && values[0].nutriments.length > 0 ?
+                                product1: values[0].nutriments && values[0].nutriments.length > 0 ?
                                     Object.keys(values[0].nutriments)
                                         .map((value, index) =>
                                             index + " : " + value).join("\n") : "-",
-                                product2: !!values[1].nutriments && values[1].nutriments.length > 0 ?
+                                product2: values[1].nutriments && values[1].nutriments.length > 0 ?
                                     Object.keys(values[1].nutriments)
                                         .map((value, index) =>
                                             index + " : " + value).join("\n") : "-"
@@ -103,7 +102,6 @@
         watch: {
             // eslint-disable-next-line
             $route(to, from) {
-                console.log(to.params.product1Id);
                 this.compare(to.params.product1Id, (to.params.product2Id));
             }
         }

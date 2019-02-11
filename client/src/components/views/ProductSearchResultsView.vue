@@ -8,8 +8,6 @@
             <SearchResult v-for="(result, index) in results" v-bind:key="index" v-bind:meal="result"/>
         </div>
         <Loading v-else/>
-    </div>
-    <Loading v-else/>
   </div>
 </template>
 
@@ -68,32 +66,7 @@ export default {
     components: {
         SearchResult,
         Loading
-    },
-  methods: {
-    search: function(searchArg) {
-      this.loaded = false;
-      this.results = [];
-
-      Requester.getProductsFromArgs(searchArg, (success, products) => {
-        this.loaded = true;
-        this.results = products;
-        this.loaded = true;
-      });
     }
-  },
-  watch: {
-    $route(to) {
-    let str = "";
-    for (const key in this.$route.query) {
-      str += (str === "" ? "" : "&") + key + "=" + this.$route.query[key];
-    }
-    this.search(to.params.q + (str === "" ? "" : "?" + str));
-    }
-  },
-  components: {
-    SearchResult,
-    Loading
-  }
 };
 </script>
 
