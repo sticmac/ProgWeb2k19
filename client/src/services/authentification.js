@@ -4,8 +4,7 @@ import Requester from './requester'
 
 export default class Authentification {
     static loggedIn(){
-        //Send request to server
-        return true;
+        return false;
     }
 
     static promptLogin(){

@@ -39,6 +39,7 @@ export default class Requester {
         }
         Fetcher.post('/account/', body, (success, data) => {
             requestCallback(success, data);
+            console.log(data);
         });
     }
 
@@ -49,6 +50,7 @@ export default class Requester {
         }
         Fetcher.post('/token/', body, (success, data) => {
             requestCallback(success, data);
+            console.log(data);
         });
     }
 }
