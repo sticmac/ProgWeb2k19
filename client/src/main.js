@@ -11,7 +11,8 @@ Vue.use(Buefy, { defaultIconPack: 'fa' })
 // import '@fortawesome/fontawesome-free'
 
 import Authentification from './services/authentification.js'
-Vue.prototype.$authentification = new Authentification();
+
+Vue.prototype.$authentification = Authentification;
 
 new Vue({
   router: router,
