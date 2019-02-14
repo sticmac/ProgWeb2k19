@@ -7,6 +7,7 @@ const logger = require('morgan');
 const indexRouter = require('./routes/index');
 const nutri_score = require('./routes/nutri_score');
 const products = require('./routes/products');
+const prices = require('./routes/prices');
 const recipes = require("./routes/recipes");
 const comments = require("./routes/comments");
 const token = require("./routes/token");
@@ -21,7 +22,8 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
 app.use((req, res, next) => {
     res.header("Access-Control-Allow-Origin", "*");
-    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, authorization");
+    res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
     next();
 });
 
@@ -39,6 +41,7 @@ app.use('/recipes', auth.optional, recipes);
 app.use('/recipes', auth.optional, comments);
 app.use('/token', auth.optional, token);
 app.use('/account', auth.optional, account);
+app.use('/prices', auth.optional, prices);
 // *****************************
 // IMPORTANT:
 // This route needs to be the last route declared !!!

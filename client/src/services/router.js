@@ -9,6 +9,7 @@ import RecipeSocialNetworkView from './../components/views/RecipeSocialNetworkVi
 import RecipeListView from './../components/views/RecipeListView.vue'
 import RecipeView from './../components/views/RecipeView.vue'
 import ErrorView from './../components/views/ErrorView.vue'
+import CompareView from './../components/views/CompareView.vue'
 import AddRecipeView from './../components/views/AddRecipeView.vue'
 import ProductSearchResultsView from './../components/views/ProductSearchResultsView.vue'
 
@@ -23,7 +24,8 @@ const routes = [
         meta: { requiresAuth: false }
     },
     { path: '/item/:productId', component: ProductView, props: true},
-    { path: '/recipes/', 
+    { path: '/compare/item/:product1Id/item/:product2Id', component: CompareView, props: true},
+    { path: '/recipes/',
         component: RecipeSocialNetworkView,
         children: [
             { path: '', component: RecipeListView },

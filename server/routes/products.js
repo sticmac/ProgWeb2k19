@@ -28,19 +28,16 @@ function buildImageURL(item) {
         }
         let image = null, key = null;
         if (!!item.images.front_fr) {
-            console.log("front");
             key = "front_fr";
             image = item.images.front_fr;
         } else {
-            console.log("not front");
-            console.log(Object.keys(item.images));
             key = Object.keys(item.images).find(value => RegExp("front").test(value));
             image = item.images[key];
         }
-        console.log("KEY", key);
-        console.log("IMAGE: ", image);
+        if (!image) {
+            return null;
+        }
         str += key + "." + image.rev + ".full.jpg";
-        console.log(str);
         return str
     } else {
         return null;
@@ -72,6 +69,14 @@ function getParams(req, res) {
         return null;
     }
     return params;
+}
+
+function filterValues(values, allergens) {
+    var result = values;
+    if (allergens) {
+        result = result.filter(v => !(new RegExp(allergens.split("+").join("|"), 'i').test(JSON.stringify(v))));
+    }
+    return result;
 }
 
 
@@ -111,14 +116,16 @@ router.get('/', auth.optional, (req, res, next) => {
 
 router.get('/:key_words', auth.optional, (req, res, next) => {
     const params = getParams(req, res);
+    console.log(req.query);
     if (!!params) {
         const keyWordArray = req.params.key_words.split("+");
         console.log(".*(" + keyWordArray.join("|") + ")+.*");
         const regex = keyWordArray.length > 1 ? ".*(" + keyWordArray.join("|") + ")+.*" : ".*" + keyWordArray[0] + ".*";
         db.findByRegex("france", "product_name", regex, params)
             .then((values) => {
+                
                 res.status(200);
-                res.send(values.map(v => {
+                res.send(filterValues(values, req.query.allergens).map(v => {
                     return {
                         id: v._id,
                         name: v.product_name || "unknown",
