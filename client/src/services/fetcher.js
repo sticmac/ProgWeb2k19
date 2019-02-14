@@ -1,9 +1,16 @@
+import Authentification from './authentification.js'
+
 const serverUrl = process.env.VUE_APP_SERVER_URL || "http://localhost:3000";
 
 export default class Fetcher {
 
     static buildRequest(method, body, relativeURL){
         const myHeaders = new Headers();
+
+        if(Authentification.loggedIn()){
+            const tokenString = "Token "+Authentification.token;
+            myHeaders.set("authorization", tokenString);
+        }
 
         var contract = { 
             method: method,
