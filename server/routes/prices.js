@@ -26,4 +26,19 @@ router.get('/:id', auth.optional, (req, res, next) => {
     })
 });
 
+router.post('/:id', auth.optional, (req, res, next) => {
+    db.pushToOneArray("france", {
+        _id: req.params.id
+    }, "prices", req.body.newPrice)
+    .then(value => {
+        res.status(200);
+        res.send();
+    })
+    .catch(err => {
+        console.error(err);
+        res.status(404);
+        res.send({error: "Not Found"});    
+    })
+});
+
 module.exports = router;
