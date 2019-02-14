@@ -65,7 +65,6 @@ class User extends AbstractModel {
 
     validatePassword(password) {
         const hash = crypto.createHmac('sha256', password).digest('hex');
-        console.log(hash, this.password, this.password === hash);
         return this.password === hash;
     };
 

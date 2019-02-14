@@ -40,9 +40,31 @@ $fa-font-path: './styles/webfonts'; //indicates where font folder is
 @import './../../node_modules/@fortawesome/fontawesome-free/scss/regular.scss';
 @import './../../node_modules/@fortawesome/fontawesome-free/scss/solid.scss';
 @import './../../node_modules/@fortawesome/fontawesome-free/scss/fontawesome.scss';
+@import './../../node_modules/bulma-slider/dist/css/bulma-slider.sass';
 
 html,
 body {
   height: 100%;
   margin: 0;
+}
+ 
+.outer-box {
+  display:block;
+  position:relative;
+  padding: 2rem;
+
+  .inner-box {
+    height: 100%;
+    width: 100%;
+    background-color: rgba($beige-light, 0.6);
+    top: 0;
+    left: 0;
+    position: absolute;
+    padding: 0;
+    text-align: center;
+
+    .content {
+      text-align: center;
+    }
+  }
 }

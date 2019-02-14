@@ -28,7 +28,7 @@
             </div>
             <Divider :marginHeight="10"/>
             <h2 class="title is-size-4">Commentaires</h2>
-            <CommentSection/>
+            <CommentSection :recipeId="recipe._id"/>
             <Divider/>
         </div>
     </div>
@@ -68,6 +68,7 @@ export default {
     },
     beforeCreate(){
         const recipeId = this.$route.params.recipeId;
+        console.log(recipeId)
         Requester.getRecipeById(recipeId, (success, recipe) => {
             this.isLoading = false;
             if(success) {

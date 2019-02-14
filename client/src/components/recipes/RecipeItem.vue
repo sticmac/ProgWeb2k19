@@ -36,7 +36,7 @@ export default {
     },
     methods : {
         recipeClicked(){
-            this.$router.push('/recipes/'+this.recipe.id);
+            this.$router.push('/recipes/'+this.recipe._id);
         }
     }
 }

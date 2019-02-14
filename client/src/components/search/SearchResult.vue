@@ -1,11 +1,12 @@
 <template>
-    <div class="product-card box card is-secondary"  v-on:click="goToItem(meal.id)">
+    <div class="product-card box card is-secondary">
         <header class="card-header is-shadowless">
-          <p class="card-header-title">
+            <b-checkbox v-on:input="checkCompare" class="inline-checkbox"/>
+            <p class="card-header-title">
             {{meal.name}}
           </p>
         </header>
-        <div class="card-content">
+        <div class="card-content" v-on:click="goToItem(meal.id)">
           <div class="media">
             <div class="media-left">
               <figure class="image is-64x64 is-square">
@@ -24,8 +25,10 @@
 </template>
 
 <script>
+import BCheckbox from "buefy/src/components/checkbox/Checkbox";
 export default {
-  props: ['meal'],
+    components: {BCheckbox},
+    props: ['meal'],
   data(){
     return {
       image_url : this.meal.image_url
@@ -37,6 +40,9 @@ export default {
     },
     goToItem(id) {
       this.$router.push('/item/' + id);
+    },
+    checkCompare(checked){
+        this.meal.compare = checked;
     }
   }
 }
@@ -44,6 +50,11 @@ export default {
 
 
 <style>
+
+.inline-checkbox {
+    display: inline-block;
+}
+
 .thumbnail {
   object-fit: cover;
 }
@@ -54,8 +65,8 @@ export default {
   /* use this value to count block height */
   line-height: 1.2em;
   /* max-height = line-height (1.2) * lines max number (3) */
-  max-height: 3.6em; 
-  text-align: justify;  
+  max-height: 3.6em;
+  text-align: justify;
 }
 
 .product-card {
