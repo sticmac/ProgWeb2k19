@@ -82,7 +82,7 @@ function filterValues(values, allergens, price) {
     }
     if (price) {
         console.log(result);
-        result = result.filter(v => v.prices === null || v.prices ? v.prices.sort(comparePrices)[0].price < price : true);
+        result = result.filter(v => v.prices ? +v.prices.sort(comparePrices)[0].price <= price : true);
     }
     return result;
 }
