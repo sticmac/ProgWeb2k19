@@ -15,6 +15,8 @@ router.post("/:id/comment", auth.required, (req, res, next) => {
             .then(recipe => {
                 recipe.addComment(comment);
                 recipe.save();
+                res.status(200);
+                res.send(recipe.toJson());
             })
             .catch(reason => {
                 console.error(reason);
