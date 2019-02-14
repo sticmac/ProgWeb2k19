@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="notification">
         <h3 class="title">Prix</h3>
 
         <div v-if="!loaded">
