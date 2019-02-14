@@ -71,10 +71,18 @@ function getParams(req, res) {
     return params;
 }
 
-function filterValues(values, allergens) {
+function comparePrices(a, b) {
+    return a.price - b.price;
+}
+
+function filterValues(values, allergens, price) {
     var result = values;
     if (allergens) {
         result = result.filter(v => !(new RegExp(allergens.split("+").join("|"), 'i').test(JSON.stringify(v))));
+    }
+    if (price) {
+        console.log(result);
+        result = result.filter(v => v.prices === null || v.prices ? v.prices.sort(comparePrices)[0].price < price : true);
     }
     return result;
 }
@@ -125,13 +133,12 @@ router.get('/:key_words', auth.optional, (req, res, next) => {
             .then((values) => {
                 
                 res.status(200);
-                res.send(filterValues(values, req.query.allergens).map(v => {
+                res.send(filterValues(values, req.query.allergens, req.query.price).map(v => {
                     return {
                         id: v._id,
                         name: v.product_name || "unknown",
                         ingredients: v.ingredients_text_with_allergens_fr || v.ingredients_text_fr || "",
                         image_url: buildImageURL(v) || null
-
                     }
                 }));
             })

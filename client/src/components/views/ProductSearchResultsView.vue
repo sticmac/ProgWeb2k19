@@ -58,9 +58,12 @@ export default {
         }
     },
     watch:{
-        // eslint-disable-next-line
-        $route(to, from){
-            this.search(to.params.q);
+        $route(to) {
+        let str = "";
+        for (const key in this.$route.query) {
+            str += (str === "" ? "" : "&") + key + "=" + this.$route.query[key];
+        }
+        this.search(to.params.q + (str === "" ? "" : "?" + str));
         }
     },
     components: {
