@@ -5,7 +5,7 @@
             icon="sync-alt"
             custom-class="fa-spin">
         </b-icon>
-        Loading...
+        Chargement...
     </div>
 </template>
 

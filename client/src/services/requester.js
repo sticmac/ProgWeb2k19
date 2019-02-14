@@ -53,4 +53,10 @@ export default class Requester {
             console.log(data);
         });
     }
+    
+    static getPricesForProduct(productId, requestCallback) {
+        Fetcher.get('/prices/' + productId, (success, data) => {
+            requestCallback(success, data);
+        });
+    }
 }
