@@ -4,18 +4,28 @@ const data = require("./utils/data");
 const mongo = require('../modules/db/mongoClient');
 
 describe('Product', function () {
-    beforeEach(() => {
+    before(() => {
+        // mongo.clean();
         mongo.init(data);
     });
-    afterEach(() => {
+
+    after(() => {
         mongo.clean();
     });
     describe('product search', function () {
 
-        it('return one product', () => {
+        it('should return one product', () => {
             return fetch('http://localhost:3000/products/Cacao')
                 .then(res => res.json())
                 .then(val => {
+                    mongo.findAll("france", {})
+                        .then(value => {
+                            console.log(value.map(v => v.product_name));
+                            console.log(value.find(v => v.product_name === "Cacao").product_name)
+                        })
+                    mongo.findByRegex("france", "product_name", '.*(Cacao)+.*', {})
+                        .then(value => console.log("LENGTH: ", value.length));
+                    console.log("VAL", val);
                     assert.equal(1, val.length)
                 });
         });
