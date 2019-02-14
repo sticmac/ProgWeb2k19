@@ -49,40 +49,17 @@
                 </span>
               </div>
             </div>
-            <div class="column">
-              <div class="field">
-                <b-switch>Default</b-switch>
-              </div>
-              <div class="field">
-                <b-switch>Default</b-switch>
-              </div>
-              <div class="field">
-                <b-switch>Default</b-switch>
-              </div>
-            </div>
           </div>
-          <b-field label="Prix minimum">
+          <b-field label="Prix maximum">
             <div>
               <input
                 class="slider is-fullwidth has-output is-primary"
                 step="1"
-                min="0"
+                min="1"
                 max="50"
                 type="range"
                 v-model="priceFilter">
               <output>{{priceFilter}}€</output>
-            </div>
-          </b-field>
-          <b-field label="Score minimum">
-            <div>
-              <input
-                class="slider is-fullwidth has-output is-primary"
-                step="1"
-                min="0"
-                max="10"
-                type="range"
-                v-model="scoreFilter">
-              <output>{{scoreFilter}}</output>
             </div>
           </b-field>
         </div>
@@ -99,8 +76,7 @@ export default {
       searchArg: this.baseArg ? this.baseArg : "",
       queryParams: {},
       allergens: [],
-      priceFilter: 0,
-      scoreFilter: 0,
+      priceFilter: 50,
       allergenInput: "",
       canLaunchSearch: false
     };
@@ -111,8 +87,7 @@ export default {
         this.allergens.push(allergen);
       });
     }
-    this.scoreFilter = this.$route.query.score ? +this.$route.query.score : 0;
-    this.priceFilter = this.$route.query.price ? +this.$route.query.price : 0;
+    this.priceFilter = this.$route.query.price ? +this.$route.query.price : 50;
   },
   watch: {
     allergens() {
@@ -153,7 +128,6 @@ export default {
           if(this.searchArg!="") {
 
       this.addQueryParam("price", this.priceFilter);
-      this.addQueryParam("score", this.scoreFilter);
       this.$emit("search", {
         searchArg: this.searchArg,
         queryParams: this.queryParams
