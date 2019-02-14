@@ -8,6 +8,7 @@ class Authentification {
         if(! Authentification.instance){
             this.logged = false;
             this.token = null;
+            this.loginCallback = null;
             Authentification.instance = this;
         }
 
@@ -24,6 +25,13 @@ class Authentification {
         })
     }
 
+    promptLoginWithCallback(loginCallback){
+        this.loginCallback = loginCallback;
+        ModalProgrammatic.open({
+                component: ModalLogin
+        })
+    }
+
     register(email, username, password, callBack){
         Requester.postRegister(email, username, password, (success, data) => {
             if(success){
@@ -31,6 +39,7 @@ class Authentification {
                 this.token = data.token;
             }
             callBack(success, data);
+            if(this.loginCallback != null) this.loginCallback(success, data);
         })
     }
 
@@ -41,6 +50,7 @@ class Authentification {
                 this.token = data.user.token;
             }
             callBack(success, data);
+            if(this.loginCallback != null) this.loginCallback(success, data);
         })
     }
 }
