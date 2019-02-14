@@ -119,7 +119,7 @@ module.exports = {
     get: (id) => {
         return new Promise((resolve, reject) =>
             mongoClient.findOneBy(COLLECTION, {_id: new ObjectID(id)})
-                .then(value => resolve(fromJson(value)))
+                .then(value => resolve(value))
                 .catch(reason => reject(reason)))
     },
     build: (object) => {
