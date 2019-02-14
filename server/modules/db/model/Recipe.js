@@ -103,7 +103,7 @@ class Recipe extends AbstractModel {
 
 function fromJson(json) {
     let recipe = new Recipe();
-    recipe.id = json._id;
+    recipe._id = json._id;
     recipe.name = json.name;
     recipe.image = json.image;
     recipe.description = json.description;
@@ -119,7 +119,7 @@ module.exports = {
     get: (id) => {
         return new Promise((resolve, reject) =>
             mongoClient.findOneBy(COLLECTION, {_id: new ObjectID(id)})
-                .then(value => resolve(value))
+                .then(value => resolve(fromJson(value)))
                 .catch(reason => reject(reason)))
     },
     build: (object) => {
