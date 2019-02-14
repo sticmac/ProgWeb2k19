@@ -85,7 +85,7 @@ export default {
         },
         sendBtnClicked(){
             if(this.recipeId != null){
-                Requester.postRecipeCommentById(this.recipeId, "testAuthor", this.newCommentContent, (success, data) => {
+                Requester.postRecipeCommentById(this.recipeId, Authentification.username, this.newCommentContent, (success, data) => {
                     if(success){
                         console.log("comment sent")
                         console.log(this.newCommentContent);

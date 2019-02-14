@@ -8,6 +8,8 @@ class Authentification {
         if(! Authentification.instance){
             this.logged = false;
             this.token = null;
+            this.username = null;
+            this.email = null;
             this.loginCallback = null;
             Authentification.instance = this;
         }
@@ -37,6 +39,8 @@ class Authentification {
             if(success){
                 this.logged = true;
                 this.token = data.token;
+                this.username = username;
+                this.email = email;
             }
             callBack(success, data);
             if(this.loginCallback != null) this.loginCallback(success, data);
@@ -48,6 +52,8 @@ class Authentification {
             if(success && data.user){
                 this.logged = true;
                 this.token = data.user.token;
+                this.username = data.user.username;
+                this.email = data.user.email;
             }
             callBack(success, data);
             if(this.loginCallback != null) this.loginCallback(success, data);
