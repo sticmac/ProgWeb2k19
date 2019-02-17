@@ -1,7 +1,12 @@
 <template>
     <div class="notification">
-        <h3 class="title">Prix</h3>
-        <b-collapse :open="true">
+        <div class="level">
+            <div class="level-left title is-4">Prix</div>
+            <div class="level-right">
+                <button class="level-item button is-primary" v-on:click="toggleNewPriceForm()">Ajouter un prix</button>
+            </div>
+        </div>
+        <b-collapse :open="displayForm">
             <b-field label="Prix">
                 <b-input type="number" placeholder="0,00" v-model="newPriceAmount" />
             </b-field>
@@ -70,6 +75,7 @@ export default {
             data: [],
             newPriceAmount: 0,
             newPriceShop: "",
+            displayForm: false,
             columns: [
                 {
                     field: 'price',
@@ -108,8 +114,10 @@ export default {
                 this.loaded = false;
                 this.getPrices();
             });
+        },
+        toggleNewPriceForm() {
+            this.displayForm = !this.displayForm;
         }
     }
 }
 </script>
-
