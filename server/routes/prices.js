@@ -13,6 +13,7 @@ router.get('/:id', auth.optional, (req, res, next) => {
     })
     .then(value => {
         res.status(200);
+        console.log(value);
         if (!value.prices){
             res.send([]);
         } else {
@@ -27,9 +28,10 @@ router.get('/:id', auth.optional, (req, res, next) => {
 });
 
 router.post('/:id', auth.optional, (req, res, next) => {
+    console.log("body", req.body);
     db.pushToOneArray("france", {
         _id: req.params.id
-    }, "prices", req.body.newPrice)
+    }, "prices", req.body)
     .then(value => {
         res.status(200);
         res.send();

@@ -83,14 +83,17 @@ export default {
         }
     },
     mounted() {
-        this.data = Requester.getPricesForProduct(this.productId, (success, prices) => {
-            this.loaded = true;
-            if(success) {
-                this.data = prices;
-            }
-        });
+        this.getPrices();
     },
     methods: {
+        getPrices() {
+            this.data = Requester.getPricesForProduct(this.productId, (success, prices) => {
+                this.loaded = true;
+                if(success) {
+                    this.data = prices;
+                }
+            });
+        },
         formattedPrices() {
             const res = [];
             for (let d of this.data) {
@@ -99,7 +102,12 @@ export default {
             return res;
         },
         sendNewPrice() {
-            console.log("New price sent!");
+            Requester.postNewPrice(this.productId, this.newPriceAmount, this.newPriceShop, () => {
+                this.newPriceAmount = 0;
+                this.newPriceShop = "";
+                this.loaded = false;
+                this.getPrices();
+            });
         }
     }
 }

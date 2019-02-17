@@ -3,7 +3,9 @@ const serverUrl = process.env.VUE_APP_SERVER_URL || "http://localhost:3000";
 export default class Fetcher {
 
     static buildRequest(method, body, relativeURL){
-        const myHeaders = new Headers();
+        const myHeaders = new Headers({
+            "Content-Type": "application/json"
+        });
 
         const contract = { 
             method: method,
@@ -22,7 +24,8 @@ export default class Fetcher {
     }
 
     static post(relativeURL, body, fetchCallback){
-        const request = this.buildRequest('POST', body, relativeURL);
+        const sendBody = JSON.stringify(body);
+        const request = this.buildRequest('POST', sendBody, relativeURL);
         this.fetchRequest(request, fetchCallback);
     }
 
@@ -38,7 +41,6 @@ export default class Fetcher {
 
                 response.json().then((data) => {
                     fetchCallback(true, data);
-
                 }).catch(function(err) {
                     // eslint-disable-next-line
                     console.warn(err);
