@@ -7,15 +7,17 @@
             </div>
         </div>
         <b-collapse :open="displayForm">
-            <b-field label="Prix">
-                <b-input type="number" placeholder="0,00" v-model="newPriceAmount" />
-            </b-field>
-            <b-field label="Magasin">
-                <b-input v-model="newPriceShop" />
-            </b-field>
-            <p class="control">
-                <button class="button is-primary" v-on:click="sendNewPrice()">Envoyer</button>
-            </p>
+            <section class="form-section">
+                <b-field label="Prix (€)">
+                    <b-input type="number" placeholder="0,00" v-model="newPriceAmount" />
+                </b-field>
+                <b-field label="Magasin">
+                    <b-input v-model="newPriceShop" />
+                </b-field>
+                <p class="control">
+                    <button class="button is-primary" v-on:click="sendNewPrice()">Envoyer</button>
+                </p>
+            </section>
         </b-collapse>
         <div v-if="!loaded">
             <Loading />
@@ -121,3 +123,10 @@ export default {
     }
 }
 </script>
+
+<style>
+.form-section {
+    padding: 0 1.5rem 3rem 1.5rem;
+}
+</style>
+
