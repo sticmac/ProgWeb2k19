@@ -1,7 +1,17 @@
 <template>
     <div class="notification">
         <h3 class="title">Prix</h3>
-
+        <b-collapse :open="true">
+            <b-field label="Prix">
+                <b-input type="number" placeholder="0,00" v-model="newPriceAmount" />
+            </b-field>
+            <b-field label="Magasin">
+                <b-input v-model="newPriceShop" />
+            </b-field>
+            <p class="control">
+                <button class="button is-primary" v-on:click="sendNewPrice()">Envoyer</button>
+            </p>
+        </b-collapse>
         <div v-if="!loaded">
             <Loading />
         </div>
@@ -10,6 +20,7 @@
                 <div class="column has-text-grey-darker is-size-5">{{data[0].price | euroFilter}}</div>
                 <div class="column is-size-5">{{data[0].shop}}</div>
             </div>
+
             <b-collapse class="card" :open="false">
                 <div slot="trigger" slot-scope="props" class="card-header">
                     <p class="card-header-title">
@@ -57,6 +68,8 @@ export default {
         return {
             loaded: false,
             data: [],
+            newPriceAmount: 0,
+            newPriceShop: "",
             columns: [
                 {
                     field: 'price',
@@ -84,6 +97,9 @@ export default {
                 res.push({price: this.$options.filters.euroFilter(d.price), shop: d.shop});
             }
             return res;
+        },
+        sendNewPrice() {
+            console.log("New price sent!");
         }
     }
 }
