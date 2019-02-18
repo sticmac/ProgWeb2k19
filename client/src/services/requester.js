@@ -56,7 +56,7 @@ export default class Requester {
 
     static postNewPrice(productId, newPriceAmount, newPriceShop, requestCallback) {
         const body = {
-            price: parseInt(newPriceAmount),
+            price: parseFloat(newPriceAmount),
             shop: newPriceShop
         }
         Fetcher.post('/prices/' + productId, body, (success, data) => {

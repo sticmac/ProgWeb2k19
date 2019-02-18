@@ -9,7 +9,7 @@
         <b-collapse :open="displayForm">
             <section class="form-section">
                 <b-field label="Prix (€)">
-                    <b-input type="number" placeholder="0,00" v-model="newPriceAmount" />
+                    <b-input type="number" placeholder="0,00" step=".01" v-model="newPriceAmount" />
                 </b-field>
                 <b-field label="Magasin">
                     <b-input v-model="newPriceShop" />
