@@ -59,6 +59,13 @@ export default {
       username : ""
     };
   },
+  mounted() {
+    if (this.$route.path.startsWith("/recipe")) {
+      this.selected = 1;
+    } else {
+      this.selected = 0;
+    }
+  },
   methods: {
     select(value) {
       this.selected = value;

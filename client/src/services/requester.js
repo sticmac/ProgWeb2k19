@@ -86,6 +86,22 @@ export default class Requester {
             requestCallback(success, data);
         })
     }
+
+    static postRecipe(name, image, description, price, time_required, products, requestCallback) {
+        const body = {
+            recipe: {
+                name: name,
+                image: image,
+                description: description,
+                price: parseInt(price),
+                time_required: parseInt(time_required),
+                products: products
+            }
+        }
+        Fetcher.post('/recipes/', body, (success, data) => {
+            requestCallback(success, data);
+        });
+    }
     
     static getPricesForProduct(productId, requestCallback) {
         Fetcher.get('/prices/' + productId, (success, data) => {
