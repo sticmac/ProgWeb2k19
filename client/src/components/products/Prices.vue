@@ -26,6 +26,7 @@
             <div class="columns">
                 <div class="column has-text-grey-darker is-size-5">{{data[0].price | euroFilter}}</div>
                 <div class="column is-size-5">{{data[0].shop}}</div>
+                <div class="column is-size-5">{{new Date(data[0].date).toLocaleDateString()}}</div>
             </div>
 
             <b-collapse class="card" :open="false">
@@ -87,6 +88,10 @@ export default {
                     field: 'shop',
                     label: 'Magasin',
                 },
+                {
+                    field: 'date',
+                    label: 'Date'
+                }
             ]
         }
     },
@@ -105,12 +110,13 @@ export default {
         formattedPrices() {
             const res = [];
             for (let d of this.data) {
-                res.push({price: this.$options.filters.euroFilter(d.price), shop: d.shop});
+                res.push({price: this.$options.filters.euroFilter(d.price), shop: d.shop, date: new Date(d.date).toLocaleDateString()});
             }
             return res;
         },
         sendNewPrice() {
-            Requester.postNewPrice(this.productId, this.newPriceAmount, this.newPriceShop, () => {
+            const date = new Date();
+            Requester.postNewPrice(this.productId, this.newPriceAmount, this.newPriceShop, date, () => {
                 this.newPriceAmount = 0;
                 this.newPriceShop = "";
                 this.loaded = false;
@@ -118,7 +124,11 @@ export default {
             });
         },
         toggleNewPriceForm() {
-            this.displayForm = !this.displayForm;
+            if (this.$authentification.loggedIn()) {
+                this.displayForm = !this.displayForm;
+            } else {
+                this.$authentification.promptLogin();
+            }
         }
     }
 }

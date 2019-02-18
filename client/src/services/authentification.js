@@ -22,10 +22,12 @@ class Authentification {
 
     checkIfLoggedIn(){
         const token = VueCookies.get('token');
+        const username = VueCookies.get('username');
         if(token != null){
             this.token = token;
             this.logged = true;
-            this.username = VueCookies.get('username');
+            if(username != null) this.username = VueCookies.get('username');
+            else this.username = "";
         }
     }
 
@@ -66,10 +68,12 @@ class Authentification {
             if(success && data.user){
                 this.logged = true;
                 this.token = data.user.token;
-                this.username = data.user.username;
+                if(data.user.name){
+                    this.username = data.user.name;
+                    VueCookies.set('username', this.username);
+                }
                 this.email = data.user.email;
                 VueCookies.set('token', this.token);
-                VueCookies.set('username', this.username);
             }
             callBack(success, data);
             if(this.loginCallback != null) this.loginCallback(success, data);
