@@ -66,7 +66,7 @@ class Authentification {
             if(success && data.user){
                 this.logged = true;
                 this.token = data.user.token;
-                this.username = data.user.username;
+                this.username = data.user.name;
                 this.email = data.user.email;
                 VueCookies.set('token', this.token);
                 VueCookies.set('username', this.username);
