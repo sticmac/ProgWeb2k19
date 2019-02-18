@@ -22,7 +22,7 @@
             <b-field label="Nom">
                 <b-input v-model="ingredientName" placeholder="Nom de l'ingrédient..." rounded></b-input>
             </b-field>
-            <b-field label="Image">
+            <b-field label="URL Image (facultatif)">
                 <b-input v-model="ingredientImageUrl" type="url" placeholder="Insérez l'URL de l'image" rounded></b-input>
             </b-field>
             <b-field label="Quantité">
@@ -38,11 +38,11 @@
             </b-tooltip>
         </div>
         <div class="column">
-            <h3 class="title is-3">Listes ingrédients : </h3>
+            <h3 class="title is-3">Liste ingrédients : </h3>
             <span
                 v-for="(ingredient, index) in ingredients"
                 v-bind:key="index"
-                class="tag is-info is-medium">
+                class="tag is-info is-medium ingredient">
                 {{ingredient.name}} - {{ingredient.quantity}}
                 <button
                 class="delete is-small"
@@ -122,4 +122,7 @@ export default {
 </script>
 
 <style>
+.ingredient {
+    margin: 3px;
+}
 </style>
