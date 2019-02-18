@@ -28,7 +28,7 @@ router.get("/item/:id", auth.optional, (req, res, next) => {
     Recipe.get(req.params.id)
         .then(value => {
             res.status(200);
-            res.send(value);
+            res.send(value.toJson());
         })
         .catch(reason => {
             console.error(reason);

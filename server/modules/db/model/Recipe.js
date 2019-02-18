@@ -103,7 +103,7 @@ class Recipe extends AbstractModel {
 
 function fromJson(json) {
     let recipe = new Recipe();
-    recipe.id = json._id;
+    recipe._id = json._id;
     recipe.name = json.name;
     recipe.image = json.image;
     recipe.description = json.description;

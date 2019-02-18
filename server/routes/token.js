@@ -1,3 +1,7 @@
+// ***********************
+// We used the passport documentation tutorial to implement the login system.
+// http://www.passportjs.org/docs/login/
+// ***********************
 const express = require('express');
 const router = express.Router();
 const User = require("../modules/db/model/User");

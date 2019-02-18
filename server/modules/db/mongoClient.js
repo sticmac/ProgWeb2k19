@@ -80,7 +80,7 @@ module.exports = {
             );
     },
     init: (data) => {
-        listCollections()
+        return listCollections()
             .then(collections => {
                 if (collections.length === 0) {
                     db.createCollection("france");

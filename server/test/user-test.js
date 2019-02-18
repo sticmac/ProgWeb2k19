@@ -42,6 +42,43 @@ describe('User', function () {
                 })
         });
 
+        it('should prevent the creation of second account with same email', function () {
+            return fetch("http://localhost:3000/account/", {
+                method: 'POST',
+                mode: "cors",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    name: "Test",
+                    email: "test@tets.fr",
+                    password: "123456789"
+
+                })
+            })
+                .then(() => {
+                    return fetch("http://localhost:3000/account/", {
+                        method: 'POST',
+                        mode: "cors",
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                        body: JSON.stringify({
+                            name: "Test",
+                            email: "test@tets.fr",
+                            password: "123456789"
+
+                        })
+                    })
+                }).then(res => {
+                    assert.equal(400, res.status);
+                    return res.json()
+                }).then(json => {
+                    assert.equal(json.error, "Account already exists using email: test@tets.fr")
+                })
+
+        });
+
         it('get the token from the account', function () {
             return fetch("http://localhost:3000/token/", {
                 method: 'POST',

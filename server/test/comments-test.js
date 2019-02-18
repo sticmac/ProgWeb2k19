@@ -15,11 +15,13 @@ function login() {
                 "Content-Type": "application/json",
             },
             body: JSON.stringify({
-                email: user.email,
+                email: "test@test.fr",
                 password: "123456"
             })
         })
-            .then(res => res.json().then(json => resolve(json.user.token)))
+            .then(res => {
+                res.json().then(json => resolve(json.user.token))
+            })
     });
 }
 
@@ -59,11 +61,14 @@ describe('Recipes', function () {
         });
         user.save();
     });
+
     afterEach(() => {
         mongo.clean();
     });
+
     describe("Add comment to recipes", function () {
         it('should add a comment to a recipe', function () {
+            this.timeout(3000);
             return login()
                 .then(token => {
                     return createRecipe(token)
@@ -89,10 +94,13 @@ describe('Recipes', function () {
                                     return res.json()
                                 })
                                 .then(json => {
-                                    // console.log("JSON : " + json);
+                                    console.log("JSON : " + json);
                                 })
+                                .catch(reason => console.log(reason))
                         })
-                });
+                        .catch(reason => console.log(reason))
+                })
+                .catch(reason => console.log(reason));
         });
     });
 
