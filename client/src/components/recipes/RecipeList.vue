@@ -1,7 +1,7 @@
 <template>
 <div>
     <div v-if="!isLoading && recipes.length > 0" class="columns is-multiline">
-        <div class="column" v-for="(recipe, index) in recipes" :key="index">
+        <div class="column is-half" v-for="(recipe, index) in recipes" :key="index">
             <RecipeItem  :recipe="recipe"/>
         </div>
     </div>
