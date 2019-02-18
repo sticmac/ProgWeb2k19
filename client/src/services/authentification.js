@@ -22,10 +22,12 @@ class Authentification {
 
     checkIfLoggedIn(){
         const token = VueCookies.get('token');
+        const username = VueCookies.get('username');
         if(token != null){
             this.token = token;
             this.logged = true;
-            this.username = VueCookies.get('username');
+            if(username != null) this.username = VueCookies.get('username');
+            else this.username = "";
         }
     }
 

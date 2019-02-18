@@ -37,7 +37,7 @@
             <!-- <figure class="image is-24x24">
               <img class="is-rounded" src="https://bulma.io/images/placeholders/24x24.png">
             </figure> -->
-            {{username}}
+            <p v-if="username" style="margin: 0 2.5rem 0 0;">{{username}}</p>
             <a class="button is-primary is-danger is-outlined" @click="disconnectBtnClicked()">
               <strong>Se déconnecter</strong>
             </a>
