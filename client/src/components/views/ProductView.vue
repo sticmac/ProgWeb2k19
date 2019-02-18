@@ -35,7 +35,7 @@
                 </b-taglist>
               </div>
              </div>
-             <div class="column">
+             <div class="column is-one-third">
                <Prices v-bind:productId="productId"/>
              </div>
           </div>

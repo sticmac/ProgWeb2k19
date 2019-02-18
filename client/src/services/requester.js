@@ -57,6 +57,16 @@ export default class Requester {
             requestCallback(success, data);
         });
     }
+
+    static postNewPrice(productId, newPriceAmount, newPriceShop, requestCallback) {
+        const body = {
+            price: parseFloat(newPriceAmount),
+            shop: newPriceShop
+        }
+        Fetcher.post('/prices/' + productId, body, (success, data) => {
+            requestCallback(success, data);
+        })
+    }
     
     static getPricesForProduct(productId, requestCallback) {
         Fetcher.get('/prices/' + productId, (success, data) => {

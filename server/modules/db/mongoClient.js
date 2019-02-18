@@ -69,6 +69,18 @@ module.exports = {
                     resolve(res);
                 }));
     },
+    pushToOneArray: (collection, id, attr, newValue) => {
+        const req = {};
+        req[attr] = newValue;
+        return new Promise((resolve, reject) =>
+            db.collection(collection).update(id, {$push: req},
+                (err, res) => {
+                    if (!!err) {
+                        reject(err);
+                    }
+                    resolve(res);
+                }));
+    },
     clean: () => {
         listCollections()
             .then(collections => {
