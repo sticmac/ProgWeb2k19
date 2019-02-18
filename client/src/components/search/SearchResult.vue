@@ -11,7 +11,7 @@
             <div class="level-left">
               <div class="content level-item is-large">{{meal.name.length < 15 ? meal.name : meal.name.substring(0,15) + "…"}}</div>
             </div>
-            <div class="level-right">
+            <div class="level-right" v-on:click.stop="">
               <b-checkbox v-on:input="checkCompare" class="inline-checkbox level-right"/>
             </div>
           </div>
@@ -38,6 +38,9 @@ export default {
     },
     checkCompare(checked){
         this.meal.compare = checked;
+    },
+    doStop() {
+      console.log("Stopped");
     }
   }
 }
