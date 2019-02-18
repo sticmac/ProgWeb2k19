@@ -13,9 +13,6 @@
                     {{comment.content}}
                     <br>
                     <small>
-                        <a>Aimer</a> · <a>Répondre</a> ·
-                    </small>
-                    <small>
                         {{date}}
                     </small>
                 </p>
