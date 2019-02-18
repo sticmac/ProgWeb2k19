@@ -22,13 +22,12 @@ export default class Fetcher {
         };
 
         if(method === "POST"){
-            myHeaders.set("Content-Type","application/json");
             contract = { 
                 method: method,
                 headers: myHeaders,
                 mode: 'cors',
                 cache: 'default',
-                body : JSON.stringify(body)
+                body : body
             };    
         }
         return new Request(serverUrl + relativeURL, contract);
