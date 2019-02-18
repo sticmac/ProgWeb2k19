@@ -39,7 +39,9 @@ export default class Fetcher {
     }
 
     static post(relativeURL, body, fetchCallback){
+        console.log("body", body);
         const sendBody = JSON.stringify(body);
+        console.log("sendBody", sendBody);
         const request = this.buildRequest('POST', sendBody, relativeURL);
         this.fetchRequest(request, fetchCallback);
     }
