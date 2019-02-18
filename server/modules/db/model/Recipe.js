@@ -148,7 +148,7 @@ module.exports = {
         return new Promise((resolve, reject) => {
             mongoClient.findAll(COLLECTION, params)
                 .then(values => {
-                    resolve(values.map(v => new Recipe(v)))
+                    resolve(values.map(v => fromJson(v)))
                 })
                 .catch(reason => reject(reason))
         });
