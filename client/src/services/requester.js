@@ -19,6 +19,12 @@ export default class Requester {
         });
     }
 
+    static getScoreById(productId, requestCallback) {
+        Fetcher.get('/nutriscore/item/' + productId, (success, data) => {
+            requestCallback(success, data);
+        });
+    }
+
     static getRecipes(requestCallback){
         Fetcher.get('/recipes/', (success, data) => {
             requestCallback(success, data);

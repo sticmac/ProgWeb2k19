@@ -81,7 +81,6 @@ function filterValues(values, allergens, price) {
         result = result.filter(v => !(new RegExp(allergens.split("+").join("|"), 'i').test(JSON.stringify(v))));
     }
     if (price) {
-        console.log(result);
         result = result.filter(v => v.prices ? +v.prices.sort(comparePrices)[0].price <= price : true);
     }
     return result;
