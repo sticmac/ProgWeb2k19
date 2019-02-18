@@ -2,10 +2,10 @@
   <div class="container">
     <h1 class="title is-1">Ajouter une nouvelle recette</h1>
     <b-field label="Nom de la recette" custom-class="is-medium">
-      <b-input v-model="name" placeholder="Tapez le nom de la recette..." required></b-input>
+      <b-input v-model="name" placeholder="Tapez le nom de la recette..." maxlength="25" required></b-input>
     </b-field>
     <b-field label="URL de l'image de la recette" custom-class="is-medium">
-      <b-input v-model="image" type="url" placeholder="Insérez l'URL de l'image" required></b-input>
+      <b-input v-model="image" type="url" placeholder="Insérez l'URL de l'image" maxlength="300" required></b-input>
     </b-field>
     <b-field label="Description" custom-class="is-medium">
       <b-input v-model="description" type="textarea" placeholder="Tapez la description de la recette..." required></b-input>

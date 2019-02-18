@@ -1,8 +1,8 @@
 <template>
-<div class="card hvr-underline-from-center" @click="recipeClicked()">
+<div class="card hvr-underline-from-center" @click="recipeClicked()" style="width: 100%">
   <div class="card-image">
     <figure class="image is-4by3">
-      <img v-if="this.recipe.image" :src="this.recipe.image" alt="Image de la recette">
+      <img v-if="recipeImageUrl" :src="recipeImageUrl" alt="Image de la recette" @error="imageLoadError">
       <img v-else src="https://bulma.io/images/placeholders/640x480.png" alt="Placeholder image">
     </figure>
   </div>
@@ -19,7 +19,7 @@
 
     <div class="content">
         <br>
-        <p class="is-6">{{this.recipe.description}}</p>
+        <p class="is-6">{{this.recipe.description.length > 50 ? this.recipe.description.slice(0,50) + "..." : this.recipe.description}}</p>
     </div>
   </div>
 </div>
@@ -28,6 +28,11 @@
 <script>
 import RecipeItemIcons from './RecipeItemIcons.vue'
 export default {
+    data() {
+        return {
+            recipeImageUrl: "",
+        }
+    },
     components : {
         RecipeItemIcons
     },
@@ -37,8 +42,14 @@ export default {
     methods : {
         recipeClicked(){
             this.$router.push('/recipes/'+this.recipe._id);
+        },
+        imageLoadError() {
+            this.recipeImageUrl = "https://bulma.io/images/placeholders/640x480.png";
         }
-    }
+    },
+    created() {
+        this.recipeImageUrl = this.recipe.image;
+    },
 }
 </script>
 
