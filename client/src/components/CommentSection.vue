@@ -72,7 +72,6 @@ export default {
             Authentification.promptLoginWithCallback((success, data) => {
                 this.loggedIn = this.$authentification.loggedIn();
             });
-            
         },
         refreshCommentsList(){
             if(this.recipeId != null){

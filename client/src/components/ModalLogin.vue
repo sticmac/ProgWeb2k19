@@ -134,6 +134,7 @@ export default {
                 this.$authentification.register(this.email, this.username, this.password, (success, data) => {
                     if(success &&  this.$authentification.loggedIn()){
                         if(router.currentRoute.query.redirect) router.push(router.currentRoute.query.redirect)
+                        else router.go()
                         this.$parent.close()
                     }else{
                         this.error = "L'inscription a échoué.";
@@ -150,6 +151,7 @@ export default {
                 this.$authentification.login(this.email, this.password, (success, data) => {
                     if(success &&  this.$authentification.loggedIn()){
                         if(router.currentRoute.query.redirect) router.push(router.currentRoute.query.redirect)
+                        else router.go()
                         this.$parent.close()
                     }else{
                         this.error = "La connexion a échoué. Vérifiez que votre mot de passe et email soient correct.";
