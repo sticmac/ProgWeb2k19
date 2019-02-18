@@ -124,7 +124,11 @@ export default {
             });
         },
         toggleNewPriceForm() {
-            this.displayForm = !this.displayForm;
+            if (this.$authentification.loggedIn()) {
+                this.displayForm = !this.displayForm;
+            } else {
+                this.$authentification.promptLogin();
+            }
         }
     }
 }
