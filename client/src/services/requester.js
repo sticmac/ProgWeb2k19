@@ -75,10 +75,12 @@ export default class Requester {
         });
     }
 
-    static postNewPrice(productId, newPriceAmount, newPriceShop, requestCallback) {
+    static postNewPrice(productId, newPriceAmount, newPriceShop, date, requestCallback) {
+        console.log("date", date);
         const body = {
             price: parseFloat(newPriceAmount),
-            shop: newPriceShop
+            shop: newPriceShop,
+            date: date
         }
         Fetcher.post('/prices/' + productId, body, (success, data) => {
             requestCallback(success, data);
