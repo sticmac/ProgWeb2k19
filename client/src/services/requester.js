@@ -37,6 +37,23 @@ export default class Requester {
         });
     }
 
+    static postRecipeCommentById(recipeId, author, content, requestCallback) {
+        const body = {
+            author: author,
+            content : content,
+            date : Date.now().toString()
+        }
+        Fetcher.post('/recipes/' + recipeId+"/comment/", body, (success, data) => {
+            requestCallback(success, data);
+        });
+    }
+
+    static getRecipeCommentsById(recipeId, requestCallback) {
+        Fetcher.get('/recipes/' + recipeId+"/comments/", (success, data) => {
+            requestCallback(success, data);
+        });
+    }
+
     static postRegister(email, username, password, requestCallback) {
         const body = {
             email: email,
