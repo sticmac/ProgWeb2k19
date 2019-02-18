@@ -92,7 +92,7 @@ class Recipe extends AbstractModel {
     addComment(comment) {
         console.log(comment);
         return new Promise((resolve, reject) => {
-            mongoClient.pushToOneArray(COLLECTION, {_id: this._id}, "comments", {comments: comment})
+            mongoClient.pushToOneArray(COLLECTION, {_id: this._id}, "comments", comment)
                 .then(value => {
                     console.log(value.toString());
                     this.comments.push(comment);

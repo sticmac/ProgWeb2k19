@@ -1,8 +1,8 @@
 <template>
-        <article class="media">
+    <article class="media">
         <figure class="media-left">
             <p class="image is-64x64">
-            <img src="https://bulma.io/images/placeholders/128x128.png">
+                <img src="https://bulma.io/images/placeholders/128x128.png">
             </p>
         </figure>
         <div class="media-content">
@@ -13,10 +13,10 @@
                     {{comment.content}}
                     <br>
                     <small>
-                        <a>Aimer</a> · <a>Répondre</a> · 
+                        <a>Aimer</a> · <a>Répondre</a> ·
                     </small>
-                     <small>
-                        {{comment.date}}
+                    <small>
+                        {{date}}
                     </small>
                 </p>
             </div>
@@ -30,19 +30,27 @@
 </template>
 
 <script>
-// import Comment from './Comment.vue'
+    // import Comment from './Comment.vue'
+    import moment from "moment";
 
-export default {
-    name: "Comment",
-    // components : {
-    //     Comment
-    // },
-    props : {
-        comment : null,
-        // isResponse : false,
-        // responses : Array
+    export default {
+        name: "Comment",
+        // components : {
+        //     Comment
+        // },
+        props: {
+            comment: null,
+            // isResponse : false,
+            // responses : Array
+        }, data() {
+            return {
+                date: ""
+            }
+        },
+        created() {
+            this.date = moment(parseInt(this.comment.date)).format("DD/MM/YYYY");
+        }
     }
-}
 </script>
 
 <style>
