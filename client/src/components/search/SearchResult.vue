@@ -9,7 +9,7 @@
           </div>
           <div class="card-content level">
             <div class="level-left">
-              <div class="content level-item is-large">{{meal.name.length < 15 ? meal.name : meal.name.substring(0,15) + "…"}}</div>
+              <div class="content is-large truncate">{{meal.name}}</div>
             </div>
             <div class="level-right" v-on:click.stop="">
               <b-checkbox v-on:input="checkCompare" class="inline-checkbox level-right"/>
@@ -69,6 +69,13 @@ export default {
 
 .product-card {
   cursor: pointer;
+}
+
+.truncate {
+  width: 10rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 </style>
 
