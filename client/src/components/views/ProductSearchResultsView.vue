@@ -6,12 +6,12 @@
         </div>
         <div v-else-if="loaded">
             <div class="columns is-multiline">
-                <div class="column is-one-third" v-for="(result, index) in paginedResults" :key="currentPageNumber+'_'+index">
+                <div class="column is-one-quarter" v-for="(result, index) in paginedResults" :key="currentPageNumber+'_'+index">
                     <SearchResult   v-bind:meal="result"/>                    
                 </div>
             </div>
             <b-pagination
-                :total="results.length-1"
+                :total="results.length"
                 :current.sync="currentPageNumber"
                 :order="'is-centered'"
                 :simple="false"
@@ -89,7 +89,7 @@ export default {
             console.log(this.results.length);
             var resultForPage = [];
             if(this.results != null){
-                const startIndex = this.currentPageNumber * this.itemsPerPage;
+                const startIndex = (this.currentPageNumber - 1) * this.itemsPerPage;
                 resultForPage = this.results.slice(startIndex, startIndex + this.itemsPerPage);
             }
             return resultForPage;
