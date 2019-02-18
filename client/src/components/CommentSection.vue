@@ -64,7 +64,7 @@ export default {
     },
     watch: {
         recipeId(){
-            refreshCommentsList();
+            this.refreshCommentsList();
         }
     },
     methods : {
@@ -97,6 +97,7 @@ export default {
     },
     created(){
         this.loggedIn = this.$authentification.loggedIn();
+        this.refreshCommentsList();
     }
 }
 </script>

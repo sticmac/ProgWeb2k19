@@ -5,7 +5,19 @@
             Aucun résultat n'a été trouvé... :-(
         </div>
         <div v-else-if="loaded">
-            <SearchResult v-for="(result, index) in results" v-bind:key="index" v-bind:meal="result"/>
+            <div class="columns is-multiline">
+                <div class="column is-one-quarter" v-for="(result, index) in paginedResults" :key="currentPageNumber+'_'+index">
+                    <SearchResult   v-bind:meal="result"/>                    
+                </div>
+            </div>
+            <b-pagination
+                :total="results.length"
+                :current.sync="currentPageNumber"
+                :order="'is-centered'"
+                :simple="false"
+                :rounded="true"
+                :per-page="itemsPerPage">
+            </b-pagination>
         </div>
         <Loading v-else/>
   </div>
@@ -21,7 +33,9 @@ export default {
   data: function() {
     return {
       results: [],
-      loaded: false
+      loaded: false,
+      currentPageNumber: 1,
+      itemsPerPage: 12
     };
   },
   mounted() {
@@ -69,6 +83,17 @@ export default {
     components: {
         SearchResult,
         Loading
+    },
+    computed : {
+        paginedResults(){
+            console.log(this.results.length);
+            var resultForPage = [];
+            if(this.results != null){
+                const startIndex = (this.currentPageNumber - 1) * this.itemsPerPage;
+                resultForPage = this.results.slice(startIndex, startIndex + this.itemsPerPage);
+            }
+            return resultForPage;
+        }
     }
 };
 </script>

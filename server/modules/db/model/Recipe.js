@@ -90,15 +90,17 @@ class Recipe extends AbstractModel {
     }
 
     addComment(comment) {
-        return new Promise((resolve, reject) =>
-            mongoClient.pushToOneArray(COLLECTION, this._id, comments, {
-                id: new ObjectID(),
-                content: comment.content,
-                author: comment.author,
-                date: comment.date
-            })
-                .then(value => resolve(this.toJson()))
-                .catch(reason => reject(reason)));
+        console.log(comment);
+        return new Promise((resolve, reject) => {
+            mongoClient.pushToOneArray(COLLECTION, {_id: this._id}, "comments", comment)
+                .then(value => {
+                    console.log(value.toString());
+                    this.comments.push(comment);
+                    resolve(this);
+                })
+                .catch(reason => reject(reason))
+        });
+
     }
 }
 
@@ -111,7 +113,7 @@ function fromJson(json) {
     recipe.price = json.price;
     recipe.time_required = json.time_required;
     recipe.products = json.products;
-    recipe.comments = [];
+    recipe.comments = json.comments;
     return recipe;
 }
 

@@ -5,18 +5,21 @@ const auth = require("./auth");
 
 router.post("/:id/comment", auth.required, (req, res, next) => {
     const comment = req.body;
-    if (!comment.hasOwnProperty("author")
-        || !comment.hasOwnProperty("content")
-        || !comment.hasOwnProperty("date")) {
+    if (!Object.keys(comment).find(k => k === "author" || k === "content" || k === "date")) {
         res.status(400);
         res.send({error: "A comment must be contain : {author, date, content}."})
     } else {
         Recipe.get(req.params.id)
             .then(recipe => {
-                recipe.addComment(comment);
-                recipe.save();
-                res.status(200);
-                res.send(recipe.toJson());
+                recipe.addComment(comment)
+                    .then(value => {
+                        res.status(200);
+                        res.send(value.toJson());
+                    })
+                    .catch(reason => {
+                        res.status(500);
+                        res.send(JSON.stringify(reason))
+                    })
             })
             .catch(reason => {
                 console.error(reason);
@@ -30,6 +33,7 @@ router.get("/:id/comments", auth.optional, (req, res, next) => {
     Recipe.get(req.params.id)
         .then(value => {
             res.status(200);
+            console.log(value.comments);
             res.send(value.comments)
         })
         .catch(reason => {

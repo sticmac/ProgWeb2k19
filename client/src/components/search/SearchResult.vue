@@ -1,25 +1,20 @@
 <template>
-    <div class="product-card box card is-secondary">
-        <header class="card-header is-shadowless">
-            <b-checkbox v-on:input="checkCompare" class="inline-checkbox"/>
-            <p class="card-header-title">
-            {{meal.name}}
-          </p>
-        </header>
-        <div class="card-content" v-on:click="goToItem(meal.id)">
-          <div class="media">
-            <div class="media-left">
-              <figure class="image is-64x64 is-square">
-                <img v-if="image_url" :src="image_url" class="thumbnail" @error="imageLoadError">
-                <img v-else src="https://bulma.io/images/placeholders/64x64.png" class="thumbnail">
-              </figure>
+    <div class="product-card">
+        <div class="card" v-on:click="goToItem(meal.id)">
+          <div class="card-image">
+            <figure class="image is-4by3">
+              <img v-if="image_url" :src="image_url" class="thumbnail" @error="imageLoadError">
+              <img v-else src="https://bulma.io/images/placeholders/64x64.png" class="thumbnail">
+            </figure>
+          </div>
+          <div class="card-content level">
+            <div class="level-left">
+              <div class="content level-item is-large">{{meal.name.length < 15 ? meal.name : meal.name.substring(0,15) + "…"}}</div>
             </div>
-
-            <div class="media-content">
-              <div class="description">{{meal.description}}</div>
+            <div class="level-right" v-on:click.stop="">
+              <b-checkbox v-on:input="checkCompare" class="inline-checkbox level-right"/>
             </div>
           </div>
-
         </div>
     </div>
 </template>
@@ -43,6 +38,9 @@ export default {
     },
     checkCompare(checked){
         this.meal.compare = checked;
+    },
+    doStop() {
+      console.log("Stopped");
     }
   }
 }

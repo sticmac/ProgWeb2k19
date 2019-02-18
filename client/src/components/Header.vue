@@ -37,7 +37,7 @@
             <!-- <figure class="image is-24x24">
               <img class="is-rounded" src="https://bulma.io/images/placeholders/24x24.png">
             </figure> -->
-            <p v-if="username">{{username}}</p>
+            <p v-if="username" style="margin: 0 2.5rem 0 0;">{{username}}</p>
             <a class="button is-primary is-danger is-outlined" @click="disconnectBtnClicked()">
               <strong>Se déconnecter</strong>
             </a>
@@ -58,6 +58,13 @@ export default {
       loggedIn : false,
       username : ""
     };
+  },
+  mounted() {
+    if (this.$route.path.startsWith("/recipe")) {
+      this.selected = 1;
+    } else {
+      this.selected = 0;
+    }
   },
   methods: {
     select(value) {

@@ -75,14 +75,32 @@ export default class Requester {
         });
     }
 
-    static postNewPrice(productId, newPriceAmount, newPriceShop, requestCallback) {
+    static postNewPrice(productId, newPriceAmount, newPriceShop, date, requestCallback) {
+        console.log("date", date);
         const body = {
             price: parseFloat(newPriceAmount),
-            shop: newPriceShop
+            shop: newPriceShop,
+            date: date
         }
         Fetcher.post('/prices/' + productId, body, (success, data) => {
             requestCallback(success, data);
         })
+    }
+
+    static postRecipe(name, image, description, price, time_required, products, requestCallback) {
+        const body = {
+            recipe: {
+                name: name,
+                image: image,
+                description: description,
+                price: parseInt(price),
+                time_required: parseInt(time_required),
+                products: products
+            }
+        }
+        Fetcher.post('/recipes/', body, (success, data) => {
+            requestCallback(success, data);
+        });
     }
     
     static getPricesForProduct(productId, requestCallback) {

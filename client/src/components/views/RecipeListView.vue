@@ -8,7 +8,10 @@
                 </div>
             </div>
             <div class="level-right">
-                <button class="button is-primary" @click="addRecipeBtnClicked()">Ajouter une recette</button>
+                <button class="button is-primary" @click="addRecipeBtnClicked()">
+                    <span class="icon is-medium"><i class="fas fa-plus" aria-hidden="true"></i></span>
+                    <span>Ajouter une recette</span>
+                    </button>
             </div>
         </div>
 
