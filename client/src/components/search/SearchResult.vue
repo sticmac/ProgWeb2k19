@@ -9,7 +9,7 @@
           </div>
           <div class="card-content level">
             <div class="level-left">
-              <div class="content level-item is-large">{{meal.name}}</div>
+              <div class="content level-item is-large">{{meal.name.length < 15 ? meal.name : meal.name.substring(0,15) + "…"}}</div>
             </div>
             <div class="level-right">
               <b-checkbox v-on:input="checkCompare" class="inline-checkbox level-right"/>
