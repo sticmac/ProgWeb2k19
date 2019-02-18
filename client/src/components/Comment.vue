@@ -12,9 +12,9 @@
                     <br>
                     {{comment.content}}
                     <br>
-                    <small>
+                    <!-- <small>
                         <a>Aimer</a> · <a>Répondre</a> · 
-                    </small>
+                    </small> -->
                      <small>
                         {{comment.date}}
                     </small>
