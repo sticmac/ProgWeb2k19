@@ -26,6 +26,7 @@ $grey-light: $beige-light;
 $primary: $blue;
 $warning: $orange;
 $link: $blue;
+$navbar-background-color: $beige-lighter;
 
 // hover effects
 $activeColor: $primary;
@@ -46,4 +47,25 @@ html,
 body {
   height: 100%;
   margin: 0;
+}
+ 
+.outer-box {
+  display:block;
+  position:relative;
+  padding: 2rem;
+
+  .inner-box {
+    height: 100%;
+    width: 100%;
+    background-color: rgba($beige-light, 0.6);
+    top: 0;
+    left: 0;
+    position: absolute;
+    padding: 0;
+    text-align: center;
+
+    .content {
+      text-align: center;
+    }
+  }
 }

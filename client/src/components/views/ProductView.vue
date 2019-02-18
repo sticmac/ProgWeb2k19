@@ -19,7 +19,13 @@
               <div class="info-tag brand">
                 <b-taglist attached>
                   <b-tag type="is-dark">Marque</b-tag>
-                  <b-tag type="is-info">{{this.product.brands ? this.product.brands : "Non spécifié"}}</b-tag>
+                  <b-tag type="is-success">{{this.product.brands ? this.product.brands : "Non spécifié"}}</b-tag>
+                </b-taglist>
+              </div>
+              <div class="info-tag brand">
+                <b-taglist attached>
+                  <b-tag type="is-dark">Nutri-score</b-tag>
+                  <b-tag type="is-warning">{{this.nutriscore}}</b-tag>
                 </b-taglist>
               </div>
               <div v-if="categories.length > 0" class="info-tag categories">
@@ -29,7 +35,7 @@
                 </b-taglist>
               </div>
              </div>
-             <div class="column">
+             <div class="column is-one-third">
                <Prices v-bind:productId="productId"/>
              </div>
           </div>
@@ -43,8 +49,6 @@
             :columns="columns"
           ></b-table>
           <p v-if="!nutritionDataAvailable">Les informations nutritives ne sont pas définies.</p>
-          <h2 class="title">Utilisé dans les recettes :</h2>
-          <p>Remplir de cards</p>
         </div>
       </div>
     </div>
@@ -74,6 +78,7 @@ export default {
       nutritionDataAvailable: true,
       data: [],
       categories: [],
+      nutriscore: 0,
       columns: [
         {
           field: "nutrition_attribute_name",
@@ -91,6 +96,9 @@ export default {
     };
   },
   mounted() {
+    Requester.getScoreById(this.productId, (success, data) => {
+      success ? this.nutriscore = data.nutriscore : "";
+    });
     Requester.getProductById(this.productId, (success, data) => {
       if (success) {
         this.product = data;
@@ -113,7 +121,7 @@ export default {
         document.getElementById("ingredients").innerHTML = this.product
           .ingredients
           ? this.product.ingredients
-          : "No ingredients specified.";
+          : "La liste des ingrédients n'est pas spécifiée.";
       } else {
         this.productExists = false;
       }

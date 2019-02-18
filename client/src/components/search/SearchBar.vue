@@ -16,7 +16,7 @@
             </p>
         </b-field>
 
-    <b-collapse class="card" :open="false">
+    <b-collapse id="filter-section" class="card" :open="false">
       <div slot="trigger" slot-scope="props" class="card-header">
         <p class="card-header-title">Ajouter des préférences</p>
         <a class="card-header-icon">
@@ -147,5 +147,8 @@ export default {
 <style lang="scss">
 #allergens > * {
   margin-right: 3px;
+}
+#filter-section {
+  margin: 0 100px;
 }
 </style>

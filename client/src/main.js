@@ -14,6 +14,9 @@ import Authentification from './services/authentification.js'
 
 Vue.prototype.$authentification = Authentification;
 
+import VueCookies from 'vue-cookies'
+Vue.use(VueCookies)
+
 new Vue({
   router: router,
   render: h => h(App),
