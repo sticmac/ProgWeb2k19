@@ -27,7 +27,7 @@ router.get('/:id', auth.optional, (req, res, next) => {
     })
 });
 
-router.post('/:id', auth.optional, (req, res, next) => {
+router.post('/:id', auth.required, (req, res, next) => {
     console.log("body", req.body);
     db.pushToOneArray("france", {
         _id: req.params.id
