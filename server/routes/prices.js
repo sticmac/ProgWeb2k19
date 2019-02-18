@@ -13,6 +13,7 @@ router.get('/:id', auth.optional, (req, res, next) => {
     })
     .then(value => {
         res.status(200);
+        console.log(value);
         if (!value.prices){
             res.send([]);
         } else {
@@ -23,6 +24,22 @@ router.get('/:id', auth.optional, (req, res, next) => {
         console.error(err);
         res.status(404);
         res.send({error: "Not Found"});
+    })
+});
+
+router.post('/:id', auth.optional, (req, res, next) => {
+    console.log("body", req.body);
+    db.pushToOneArray("france", {
+        _id: req.params.id
+    }, "prices", req.body)
+    .then(value => {
+        res.status(200);
+        res.send();
+    })
+    .catch(err => {
+        console.error(err);
+        res.status(404);
+        res.send({error: "Not Found"});    
     })
 });
 
