@@ -28,12 +28,23 @@
           <div class="columns">
             <div class="column">
               <b-field label="Ajouter un allergène">
-                <b-input
-                  placeholder="Allergène..."
-                  rounded
-                  @keyup.enter.native="onAllergenAdded()"
-                  v-model="allergenInput"
-                ></b-input>
+                <b-field grouped>
+                  <b-input
+                    placeholder="Allergène..."
+                    rounded
+                    @keyup.enter.native="onAllergenAdded()"
+                    v-model="allergenInput"
+                    expanded
+                  ></b-input>
+                  <p class="control">
+                    <button class="button is-primary is-rounded" v-on:click="onAllergenAdded()" :disabled="!allergenInput">
+                      <span class="icon is-medium">
+                          <i class="fas fa-plus"></i>
+                      </span>
+                      <span>Ajouter</span>
+                    </button>
+                  </p>
+                </b-field>
               </b-field>
               <div id="allergens">
                 <span
