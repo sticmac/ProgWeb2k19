@@ -19,7 +19,7 @@
             <div class="columns">
                 <div class="column">
                     <h1 class="title is-size-3">Description</h1>
-                    <p class="is-size-5">{{this.recipe.description}}</p>
+                    <p class="is-size-5 is-multiline">{{this.recipe.description}}</p>
                 </div>
                 <div class="column">
                     <h1 class="title is-size-3">Ingrédients</h1>
@@ -120,6 +120,10 @@ export default {
 <style scoped>
  .container{
      margin-top: 2rem;
+ }
+
+ .is-multiline{
+     white-space: pre-wrap;
  }
 </style>
 
